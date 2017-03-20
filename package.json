@@ -1,8 +1,8 @@
 {
   "name": "vue-navigation",
   "version": "1.0.0",
-  "description": "App-like navigation, based on vue and vue-router",
-  "main": "dist/navigation.min.js",
+  "description": "A Page navigation library, behaving like a native application, based on vue and vue-router.",
+  "main": "dist/vue-navigation.min.js",
   "scripts": {
     "build": "node build/build.js",
     "examples-dev": "cd examples && node build/dev-server.js",
