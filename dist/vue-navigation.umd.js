@@ -22,7 +22,6 @@ var Navigation = {
       return
     }
     var store = options.store;
-    var moduleName = (options || {}).moduleName || 'navigation';
 
     var history = [];
     if (window.sessionStorage.VUE_HISTORY) {
@@ -30,6 +29,7 @@ var Navigation = {
     }
 
     if (store) {
+      var moduleName = options.moduleName || 'navigation';
       store.registerModule(moduleName, {
         state: {history: history},
         mutations: {
