@@ -2,8 +2,18 @@
   "name": "vue-navigation",
   "version": "0.1.0",
   "description": "A page navigation library, behaving similar to mobile application navigation, based on vue and vue-router.",
+  "keywords": [
+    "navigation",
+    "vue",
+    "vue-router"
+  ],
   "main": "dist/vue-navigation.umd.js",
   "module": "dist/vue-navigation.esm.js",
+  "files": [
+    "dist/vue-navigation.esm.js",
+    "dist/vue-navigation.umd.js",
+    "src"
+  ],
   "scripts": {
     "build": "node build/build.js",
     "examples-dev": "cd examples && node build/dev-server.js",
@@ -13,7 +23,10 @@
     "type": "git",
     "url": "git+https://github.com/zack24q/vue-navigation.git"
   },
-  "author": "zack",
+  "author": {
+    "name": "zack",
+    "email": "zack24q@gmail.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/zack24q/vue-navigation/issues"
