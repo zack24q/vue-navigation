@@ -1,14 +1,8 @@
-var webpack = require('webpack')
-var webpackConfig = require('./webpack.config.js')
+const rollup = require('rollup')
+const config = require('./rollup.config.js')
 
-webpack(webpackConfig, (err, stats) => {
-  if (err) throw err
-  process.stdout.write(stats.toString({
-      colors: true,
-      modules: false,
-      children: false,
-      chunks: false,
-      chunkModules: false
-    }) + '\n\n')
-  console.log('Build complete.\n')
-});
+rollup.rollup(config.entry).then(bundle => {
+  config.bundles.map(value => {
+    bundle.write(value)
+  })
+})
