@@ -1,7 +1,7 @@
 {
   "name": "vue-navigation",
   "version": "0.1.0",
-  "description": "A page navigation library, behaving similar to mobile application navigation, based on vue and vue-router.",
+  "description": "A page navigation library, built with vue2 and vue-router2.",
   "keywords": [
     "navigation",
     "vue",
@@ -10,9 +10,9 @@
   "main": "dist/vue-navigation.umd.js",
   "module": "dist/vue-navigation.esm.js",
   "files": [
-    "dist/vue-navigation.esm.js",
-    "dist/vue-navigation.umd.js",
-    "src"
+    "dist",
+    "src",
+    "examples"
   ],
   "scripts": {
     "build": "node build/build.js",
