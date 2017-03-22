@@ -54,8 +54,9 @@ var Navigation = {
     }
 
     router.afterEach(function (to, from) {
-      var component = to.matched[0].components.default
-      component.name = component.name || component.__file
+      var matched = to.matched[to.matched.length - 1]
+      var component = matched.components.default
+      component.name = component.name || matched.path
       var toIndex = history.lastIndexOf(component.name)
       if (toIndex === -1) {
         forward(component.name)
@@ -81,6 +82,7 @@ var Navigation = {
       },
       computed: {
         historyStr: function () {
+          console.log(this.history)
           return this.history.join(',')
         }
       }
