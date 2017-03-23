@@ -1,107 +1,132 @@
 /**
-* vue-navigation v0.1.1
+* vue-navigation v0.1.2
 * https://github.com/zack24q/vue-navigation
 * Released under the MIT License.
 */
 
-var Navigation = {
+var routes = [];
+
+if (window.sessionStorage.VUE_NAVIGATION) {
+  routes = JSON.parse(window.sessionStorage.VUE_NAVIGATION);
+}
+
+var Routes = routes;
+
+var development = process.env.NODE_ENV === 'development';
+
+var Navigator = function (store, moduleName) {
+  if (store) {
+    store.registerModule(moduleName, {
+      state: {routes: Routes},
+      mutations: {
+        'navigation/FORWARD': function (state, name) {
+          state.routes.push(name);
+        },
+        'navigation/BACK': function (state, count) {
+          state.routes.splice(state.routes.length - count, count);
+        },
+        'navigation/REFRESH': function (state, count) {
+        }
+      }
+    });
+  }
+
+  var forward = function (name) {
+    store ? store.commit('navigation/FORWARD', name) : Routes.push(name);
+    window.sessionStorage.VUE_NAVIGATION = JSON.stringify(Routes);
+    development ? console.info('navigation: forward') : null;
+  };
+  var back = function (count) {
+    store ? store.commit('navigation/BACK', count) : Routes.splice(Routes.length - count, count);
+    window.sessionStorage.VUE_NAVIGATION = JSON.stringify(Routes);
+    development ? console.info('navigation: back') : null;
+  };
+  var refresh = function () {
+    store ? store.commit('navigation/REFRESH') : null;
+    development ? console.info('navigation: refresh') : null;
+  };
+
+  var jumpTo = function (name) {
+    var toIndex = Routes.lastIndexOf(name);
+    if (toIndex === -1) {
+      forward(name);
+    } else if (toIndex === Routes.length - 1) {
+      refresh();
+    } else {
+      back(Routes.length - 1 - toIndex);
+    }
+  };
+
+  return {
+    jumpTo: jumpTo
+  }
+};
+
+var NavComponent = {
+  name: 'navigation',
+  props: {},
+  data: function () {
+    return {
+      routes: Routes
+    }
+  },
+  computed: {
+    historyStr: function () {
+      return this.routes.join(',')
+    }
+  },
+  render: function (createElement) {
+    return createElement(
+      'keep-alive',
+      {props: {include: this.historyStr}},
+      this.$slots.default
+    )
+  },
+};
+
+var index = {
   install: function (Vue, options) {
     if (!options) {
       console.error('navigation need options');
       return
     }
-    var router = options.router;
-    if (!router) {
+    if (!options.router) {
       console.error('navigation need options.router');
       return
     }
+    var router = options.router;
     var store = options.store;
+    var moduleName = options.moduleName || 'navigation';
 
-    var history = [];
-    if (window.sessionStorage.VUE_HISTORY) {
-      history = JSON.parse(window.sessionStorage.VUE_HISTORY);
-    }
+    var navigator = new Navigator(store, moduleName);
 
-    if (store) {
-      var moduleName = options.moduleName || 'navigation';
-      store.registerModule(moduleName, {
-        state: {history: history},
-        mutations: {
-          'navigation/FORWARD': function (state, name) {
-            state.history.push(name);
-          },
-          'navigation/BACK': function (state, count) {
-            state.history.splice(state.history.length - count, count);
-          }
-        }
-      });
-    }
-
-    var forward = function (name) {
-      if (store) {
-        store.commit('navigation/FORWARD', name);
-      } else {
-        history.push(name);
+    // init page name
+    router.beforeEach(function (to, from, next) {
+      var matched = to.matched[to.matched.length - 1];
+      if (matched) {
+        var component = matched.components.default;
+        component.name = component.name || 'anonymous-component-' + matched.path;
       }
-      window.sessionStorage.VUE_HISTORY = JSON.stringify(history);
-      console.info('navigation: forward');
-    };
-    var back = function (count) {
-      if (store) {
-        store.commit('navigation/BACK', count);
-      } else {
-        history.splice(history.length - count, count);
-      }
-      window.sessionStorage.VUE_HISTORY = JSON.stringify(history);
-      console.info('navigation: back');
-    };
-    var refresh = function () {
-      console.info('navigation: refresh');
-    };
+      next();
+    });
 
+    // handle router change
     router.afterEach(function (to, from) {
       var matched = to.matched[to.matched.length - 1];
-      var component = matched.components.default;
-      component.name = component.name || matched.path;
-      var toIndex = history.lastIndexOf(component.name);
-      if (toIndex === -1) {
-        forward(component.name);
-      } else if (toIndex !== history.length - 1) {
-        back(history.length - 1 - toIndex);
-      } else {
-        refresh();
+      if (matched) {
+        var component = to.matched[to.matched.length - 1].components.default;
+        navigator.jumpTo(component.name);
       }
     });
 
-    Vue.component('navigation', {
-      render: function (createElement) {
-        return createElement(
-          'keep-alive',
-          {props: {include: this.historyStr}},
-          this.$slots.default
-        )
-      },
-      data: function () {
-        return {
-          history: history
-        }
-      },
-      computed: {
-        historyStr: function () {
-          console.log(this.history);
-          return this.history.join(',')
-        }
-      }
-    });
+    Vue.component('navigation', NavComponent);
 
-    var navigation = {
-      getHistory: function () {
-        return history.slice()
+    Vue.navigation = Vue.prototype.$navigation = {
+      getRoutes: function () {
+        return Routes.slice()
       }
     };
-    Vue.navigation = navigation;
-    Vue.prototype.$navigation = navigation;
   }
 };
 
-export default Navigation;
+export default index;
