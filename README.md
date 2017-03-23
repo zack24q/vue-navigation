@@ -1,6 +1,6 @@
 # vue-navigation
 
-## ！目前只支持最简单的路由方式（路由地址必须与组件一一对应，并且动态路由不能直接在自己之间跳转），复杂的路由方式正在支持中
+## ！目前只支持最简单的路由方式（路由地址必须与组件一一对应），复杂的路由方式正在支持中
 
 > 必须配合 [vue](https://github.com/vuejs/vue)`2.x` 与 [vue-router](https://github.com/vuejs/vue-router)`2.x` 一起使用
 
