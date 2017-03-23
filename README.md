@@ -11,6 +11,10 @@
 3. B返回到A时，A的状态从缓存中恢复
 4. A再次前进到B时，B重新生成，不从缓存中恢复
 
+### 在线演示
+
+[地址](https://zack24q.github.io/vue-navigation/examples/)
+
 ## 安装
 
 ```bash
@@ -39,7 +43,7 @@ App.vue
 </template>
 ```
 
-在全局环境中调用`Vue.navigation.getHistory()`或在Vue实例中调用`this.$navigation.getHistory()`都可以获取页面导航信息
+在全局环境中调用`Vue.navigation.getRoutes()`或在Vue实例中调用`this.$navigation.getRoutes()`都可以获取页面导航路径
 
 ### 搭配vuex2使用
 
@@ -55,7 +59,7 @@ Vue.use(Navigation, {router, store})
 // bootstrap your app...
 ```
 
-传入`store`后，`vue-navigation`会向`store`注册一个Module（默认名称为`navigation`），并在`history`中存储页面导航信息，同时在页面跳转时会提交`navigation/FORWARD`或`navigation/BACK`
+传入`store`后，`vue-navigation`会向`store`注册一个Module（默认名称为`navigation`），并在`routes`中存储页面导航路径，同时在页面跳转时会提交`navigation/FORWARD`或`navigation/BACK`
 
 你可以自己设置Module的名称
 
@@ -63,5 +67,5 @@ Vue.use(Navigation, {router, store})
 Vue.use(Navigation, {router, store, moduleName: 'name'})
 ```
 
-## 示例
-[代码](https://github.com/zack24q/vue-navigation/tree/master/examples)
+## 完整示例
+使用vue-cli的官方webpack模板生成 [地址](https://github.com/zack24q/vue-navigation/tree/master/examples)
