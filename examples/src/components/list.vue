@@ -14,6 +14,12 @@
       return {
         random: Math.random().toFixed(4)
       }
+    },
+    activated() {
+      console.log('list activated')
+    },
+    deactivated() {
+      console.log('list deactivated')
     }
   }
 </script>

@@ -9,9 +9,15 @@
   export default{
     data(){
       return {
-        id: this.$route.params.id,
+        id: parseInt(this.$route.params.id),
         random: Math.random().toFixed(4)
       }
+    },
+    activated() {
+      console.log('detail activated')
+    },
+    deactivated() {
+      console.log('detail deactivated')
     }
   }
 </script>

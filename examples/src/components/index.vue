@@ -12,6 +12,12 @@
       return {
         random: Math.random().toFixed(4)
       }
+    },
+    activated() {
+      console.log('index activated')
+    },
+    deactivated() {
+      console.log('index deactivated')
     }
   }
 </script>
