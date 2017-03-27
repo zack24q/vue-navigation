@@ -1,5 +1,8 @@
 # vue-navigation
 
+[![npm](https://img.shields.io/npm/v/vue-navigation.svg)](https://www.npmjs.com/package/vue-navigation)
+[![npm](https://img.shields.io/npm/dm/vue-navigation.svg)](https://www.npmjs.com/package/vue-navigation)
+
 > 必须配合 [vue](https://github.com/vuejs/vue)`2.x` 与 [vue-router](https://github.com/vuejs/vue-router)`2.x` 一起使用
 
 导航默认行为类似手机APP的页面导航（A、B、C为页面）：
