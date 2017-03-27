@@ -2,39 +2,41 @@ import Routes from './routes'
 
 var development = process.env.NODE_ENV === 'development'
 
-export default function (store, moduleName) {
+export default (store, moduleName) =>{
   if (store) {
     store.registerModule(moduleName, {
-      state: {routes: Routes},
+      state: {
+        routes: Routes
+      },
       mutations: {
-        'navigation/FORWARD': function (state, name) {
+        'navigation/FORWARD': (state, name) =>{
           state.routes.push(name)
         },
-        'navigation/BACK': function (state, count) {
+        'navigation/BACK': (state, count) =>{
           state.routes.splice(state.routes.length - count, count)
         },
-        'navigation/REFRESH': function (state, count) {
+        'navigation/REFRESH': (state, count) =>{
         }
       }
     })
   }
 
-  var forward = function (name) {
+  var forward = name =>{
     store ? store.commit('navigation/FORWARD', name) : Routes.push(name)
     window.sessionStorage.VUE_NAVIGATION = JSON.stringify(Routes)
     development ? console.info('navigation: forward') : null
   }
-  var back = function (count) {
+  var back = count =>{
     store ? store.commit('navigation/BACK', count) : Routes.splice(Routes.length - count, count)
     window.sessionStorage.VUE_NAVIGATION = JSON.stringify(Routes)
     development ? console.info('navigation: back') : null
   }
-  var refresh = function () {
+  var refresh = () =>{
     store ? store.commit('navigation/REFRESH') : null
     development ? console.info('navigation: refresh') : null
   }
 
-  var jumpTo = function (name) {
+  var go = name =>{
     var toIndex = Routes.lastIndexOf(name)
     if (toIndex === -1) {
       forward(name)
@@ -46,6 +48,6 @@ export default function (store, moduleName) {
   }
 
   return {
-    jumpTo: jumpTo
+    go
   }
 }

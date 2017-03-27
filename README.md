@@ -1,7 +1,5 @@
 # vue-navigation
 
-## ！目前只支持最简单的路由方式（路由地址必须与组件一一对应），复杂的路由方式正在支持中
-
 > 必须配合 [vue](https://github.com/vuejs/vue)`2.x` 与 [vue-router](https://github.com/vuejs/vue-router)`2.x` 一起使用
 
 导航默认行为类似手机APP的页面导航（A、B、C为页面）：
@@ -13,7 +11,9 @@
 
 ### 在线演示
 
-[地址](https://zack24q.github.io/vue-navigation/examples/)
+[演示地址](https://zack24q.github.io/vue-navigation/examples/)
+
+[代码地址](https://github.com/zack24q/vue-navigation/tree/master/examples)
 
 ## 安装
 
@@ -22,6 +22,8 @@ npm i -S vue-navigation
 ```
 
 ## 使用
+
+### 基础使用
 
 main.js
 
@@ -66,6 +68,3 @@ Vue.use(Navigation, {router, store})
 ```javascript
 Vue.use(Navigation, {router, store, moduleName: 'name'})
 ```
-
-## 完整示例
-使用vue-cli的官方webpack模板生成 [地址](https://github.com/zack24q/vue-navigation/tree/master/examples)

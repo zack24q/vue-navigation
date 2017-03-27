@@ -3,7 +3,8 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import Navigation from '../../src'
+// import Navigation from '../../src'
+import Navigation from '../../dist/vue-navigation.umd'
 
 Vue.config.productionTip = false
 Vue.use(Navigation, {router})

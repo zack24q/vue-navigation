@@ -23,7 +23,9 @@ var development = process.env.NODE_ENV === 'development';
 var Navigator = function (store, moduleName) {
   if (store) {
     store.registerModule(moduleName, {
-      state: {routes: Routes},
+      state: {
+        routes: Routes
+      },
       mutations: {
         'navigation/FORWARD': function (state, name) {
           state.routes.push(name);
@@ -52,7 +54,7 @@ var Navigator = function (store, moduleName) {
     development ? console.info('navigation: refresh') : null;
   };
 
-  var jumpTo = function (name) {
+  var go = function (name) {
     var toIndex = Routes.lastIndexOf(name);
     if (toIndex === -1) {
       forward(name);
@@ -64,24 +66,22 @@ var Navigator = function (store, moduleName) {
   };
 
   return {
-    jumpTo: jumpTo
+    go: go
   }
 };
 
 var NavComponent = {
   name: 'navigation',
   props: {},
-  data: function () {
-    return {
-      routes: Routes
-    }
-  },
+  data: function () { return ({
+    routes: Routes
+  }); },
   computed: {
-    historyStr: function () {
+    historyStr: function historyStr () {
       return this.routes.join(',')
     }
   },
-  render: function (createElement) {
+  render: function render (createElement) {
     return createElement(
       'keep-alive',
       {props: {include: this.historyStr}},
@@ -91,24 +91,22 @@ var NavComponent = {
 };
 
 var index = {
-  install: function (Vue, options) {
-    if (!options) {
-      console.error('navigation need options');
+  install: function (Vue, ref) {
+    if ( ref === void 0 ) ref = {};
+    var router = ref.router;
+    var store = ref.store;
+    var moduleName = ref.moduleName; if ( moduleName === void 0 ) moduleName = 'navigation';
+
+    if (!router) {
+      console.error('vue-navigation need options: router');
       return
     }
-    if (!options.router) {
-      console.error('navigation need options.router');
-      return
-    }
-    var router = options.router;
-    var store = options.store;
-    var moduleName = options.moduleName || 'navigation';
 
     var navigator = new Navigator(store, moduleName);
 
     // init page name
     router.beforeEach(function (to, from, next) {
-      var matched = to.matched[to.matched.length - 1];
+      var matched = to.matched[0];
       if (matched) {
         var component = matched.components.default;
         component.name = component.name || 'anonymous-component-' + matched.path;
@@ -118,19 +116,17 @@ var index = {
 
     // handle router change
     router.afterEach(function (to, from) {
-      var matched = to.matched[to.matched.length - 1];
+      var matched = to.matched[0];
       if (matched) {
-        var component = to.matched[to.matched.length - 1].components.default;
-        navigator.jumpTo(component.name);
+        var component = matched.components.default;
+        navigator.go(component.name);
       }
     });
 
     Vue.component('navigation', NavComponent);
 
     Vue.navigation = Vue.prototype.$navigation = {
-      getRoutes: function () {
-        return Routes.slice()
-      }
+      getRoutes: function () { return Routes.slice(); }
     };
   }
 };

@@ -3,17 +3,15 @@ import Routes from '../routes'
 export default {
   name: 'navigation',
   props: {},
-  data: function () {
-    return {
-      routes: Routes
-    }
-  },
+  data: () => ({
+    routes: Routes
+  }),
   computed: {
-    historyStr: function () {
+    historyStr () {
       return this.routes.join(',')
     }
   },
-  render: function (createElement) {
+  render (createElement) {
     return createElement(
       'keep-alive',
       {props: {include: this.historyStr}},

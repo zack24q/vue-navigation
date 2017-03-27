@@ -3,46 +3,37 @@ import Navigator from './navigator'
 import NavComponent from './components/navigation'
 
 export default {
-  install: function (Vue, options) {
-    if (!options) {
-      console.error('navigation need options')
+  install: (Vue, {router, store, moduleName = 'navigation'} = {}) => {
+    if (!router) {
+      console.error('vue-navigation need options: router')
       return
     }
-    if (!options.router) {
-      console.error('navigation need options.router')
-      return
-    }
-    var router = options.router
-    var store = options.store
-    var moduleName = options.moduleName || 'navigation'
 
-    var navigator = new Navigator(store, moduleName)
+    let navigator = new Navigator(store, moduleName)
 
     // init page name
-    router.beforeEach(function (to, from, next) {
-      var matched = to.matched[to.matched.length - 1]
+    router.beforeEach((to, from, next) => {
+      let matched = to.matched[0]
       if (matched) {
-        var component = matched.components.default
+        let component = matched.components.default
         component.name = component.name || 'anonymous-component-' + matched.path
       }
       next()
     })
 
     // handle router change
-    router.afterEach(function (to, from) {
-      var matched = to.matched[to.matched.length - 1]
+    router.afterEach((to, from) => {
+      let matched = to.matched[0]
       if (matched) {
-        var component = to.matched[to.matched.length - 1].components.default
-        navigator.jumpTo(component.name)
+        let component = matched.components.default
+        navigator.go(component.name)
       }
     })
 
     Vue.component('navigation', NavComponent)
 
     Vue.navigation = Vue.prototype.$navigation = {
-      getRoutes: function () {
-        return Routes.slice()
-      }
+      getRoutes: () => Routes.slice()
     }
   }
 }
