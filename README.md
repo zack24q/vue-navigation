@@ -3,30 +3,32 @@
 [![npm](https://img.shields.io/npm/v/vue-navigation.svg)](https://www.npmjs.com/package/vue-navigation)
 [![npm](https://img.shields.io/npm/dm/vue-navigation.svg)](https://www.npmjs.com/package/vue-navigation)
 
-> 必须配合 [vue](https://github.com/vuejs/vue)`2.x` 与 [vue-router](https://github.com/vuejs/vue-router)`2.x` 一起使用
+> require [vue](https://github.com/vuejs/vue) `2.x` and [vue-router](https://github.com/vuejs/vue-router) `2.x`.
 
-导航默认行为类似手机APP的页面导航（A、B、C为页面）：
+[中文文档](https://github.com/zack24q/vue-navigation/blob/master/README_CN.md)
 
-1. A前进到B，再前进到C
-2. C返回到B时，B的状态从缓存中恢复
-3. B返回到A时，A的状态从缓存中恢复
-4. A再次前进到B时，B重新生成，不从缓存中恢复
+vue-navigation default behavior is similar to native mobile app (A、B、C are pages):
 
-### 在线演示
+1. A forward to B，then forward to C;
+2. C back to B，B will **recover from cache**;
+3. B back to A，A will **recover from cache**;
+4. A forward to B again，B will **rebuild, not recover from cache**.
 
-[演示地址](https://zack24q.github.io/vue-navigation/examples/)
+### DEMO
 
-[代码地址](https://github.com/zack24q/vue-navigation/tree/master/examples)
+[DEMO](https://zack24q.github.io/vue-navigation/examples/)
 
-## 安装
+[CODE](https://github.com/zack24q/vue-navigation/tree/master/examples)
+
+## Installing
 
 ```bash
 npm i -S vue-navigation
 ```
 
-## 使用
+## Usage
 
-### 基础使用
+### Basic Usage
 
 main.js
 
@@ -48,9 +50,9 @@ App.vue
 </template>
 ```
 
-在全局环境中调用`Vue.navigation.getRoutes()`或在Vue实例中调用`this.$navigation.getRoutes()`都可以获取页面导航路径
+Call `Vue.navigation.getRoutes()` in global environment or call `this.$navigation.getRoutes()` in vue instance can get the page navigation path.
 
-### 搭配vuex2使用
+### Use with vuex2
 
 main.js
 
@@ -64,9 +66,9 @@ Vue.use(Navigation, {router, store})
 // bootstrap your app...
 ```
 
-传入`store`后，`vue-navigation`会向`store`注册一个Module（默认名称为`navigation`），并在`routes`中存储页面导航路径，同时在页面跳转时会提交`navigation/FORWARD`或`navigation/BACK`
+After passing in `store`, `vue-navigation` will register a module in `store` (default module name is `navigation`), and commit `navigation/FORWARD` or `navigation/BACK` or `navigation/REFRESH` when the page jumps.
 
-你可以自己设置Module的名称
+You can set the name of the module yourself:
 
 ```javascript
 Vue.use(Navigation, {router, store, moduleName: 'name'})
