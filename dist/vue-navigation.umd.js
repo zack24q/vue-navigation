@@ -1,5 +1,5 @@
 /**
-* vue-navigation v0.1.3
+* vue-navigation v0.1.4
 * https://github.com/zack24q/vue-navigation
 * Released under the MIT License.
 */
@@ -54,7 +54,7 @@ var Navigator = function (store, moduleName) {
     development ? console.info('navigation: refresh') : null;
   };
 
-  var go = function (name) {
+  var record = function (name) {
     var toIndex = Routes.lastIndexOf(name);
     if (toIndex === -1) {
       forward(name);
@@ -66,7 +66,7 @@ var Navigator = function (store, moduleName) {
   };
 
   return {
-    go: go
+    record: record
   }
 };
 
@@ -102,7 +102,8 @@ var index = {
       return
     }
 
-    var navigator = new Navigator(store, moduleName);
+    var navigator = Navigator(store, moduleName);
+    var backFlag = false;
 
     // init page name
     router.beforeEach(function (to, from, next) {
@@ -110,8 +111,29 @@ var index = {
       if (matched) {
         var component = matched.components.default;
         component.name = component.name || 'anonymous-component-' + matched.path;
+
+        var toIndex = Routes.lastIndexOf(component.name);
+        if (toIndex === -1) {
+          // forward
+          next();
+        } else if (toIndex === Routes.length - 1) {
+          // refresh
+          next();
+        } else {
+          // back
+          if (backFlag) {
+            backFlag = false;
+            next();
+          } else {
+            backFlag = true;
+            next(false);
+            window.history.go(toIndex + 1 - Routes.length);
+          }
+
+        }
+      } else {
+        next();
       }
-      next();
     });
 
     // handle router change
@@ -119,7 +141,7 @@ var index = {
       var matched = to.matched[0];
       if (matched) {
         var component = matched.components.default;
-        navigator.go(component.name);
+        navigator.record(component.name);
       }
     });
 

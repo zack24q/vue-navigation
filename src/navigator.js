@@ -36,7 +36,7 @@ export default (store, moduleName) =>{
     development ? console.info('navigation: refresh') : null
   }
 
-  var go = name =>{
+  var record = name =>{
     var toIndex = Routes.lastIndexOf(name)
     if (toIndex === -1) {
       forward(name)
@@ -48,6 +48,6 @@ export default (store, moduleName) =>{
   }
 
   return {
-    go
+    record
   }
 }

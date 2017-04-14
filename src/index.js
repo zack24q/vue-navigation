@@ -9,7 +9,8 @@ export default {
       return
     }
 
-    let navigator = new Navigator(store, moduleName)
+    let navigator = Navigator(store, moduleName)
+    let backFlag = false
 
     // init page name
     router.beforeEach((to, from, next) => {
@@ -17,8 +18,29 @@ export default {
       if (matched) {
         let component = matched.components.default
         component.name = component.name || 'anonymous-component-' + matched.path
+
+        let toIndex = Routes.lastIndexOf(component.name)
+        if (toIndex === -1) {
+          // forward
+          next()
+        } else if (toIndex === Routes.length - 1) {
+          // refresh
+          next()
+        } else {
+          // back
+          if (backFlag) {
+            backFlag = false
+            next()
+          } else {
+            backFlag = true
+            next(false)
+            window.history.go(toIndex + 1 - Routes.length)
+          }
+
+        }
+      } else {
+        next()
       }
-      next()
     })
 
     // handle router change
@@ -26,7 +48,7 @@ export default {
       let matched = to.matched[0]
       if (matched) {
         let component = matched.components.default
-        navigator.go(component.name)
+        navigator.record(component.name)
       }
     })
 
