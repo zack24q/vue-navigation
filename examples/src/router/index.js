@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '../components/index.vue'
-import List from '../components/list.vue'
-import Detail from '../components/detail.vue'
+import Index from '../pages/index.vue'
+import List from '../pages/list.vue'
+import Detail from '../pages/detail.vue'
 
 Vue.use(Router)
 
@@ -10,6 +10,7 @@ export default new Router({
   mode: 'hash',
   routes: [
     {
+      name: '',
       path: '/',
       component: Index
     },
