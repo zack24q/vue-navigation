@@ -14,6 +14,8 @@ vue-navigation default behavior is similar to native mobile app (A、B、C are p
 3. B back to A，A will **recover from cache**;
 4. A forward to B again，B will **rebuild, not recover from cache**.
 
+**!important: Because the browser does not provide page forward and backward events, so the library needs to maintain a routing record to determine the forward and backward behavior, so the current routing records are not allowed to contain duplicate routes, and now forward to the existing route will be reset to return behavior**
+
 ### DEMO
 
 [DEMO](https://zack24q.github.io/vue-navigation/examples/)
