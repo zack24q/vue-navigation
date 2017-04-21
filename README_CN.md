@@ -12,7 +12,7 @@
 3. B返回到A时，A的状态从缓存中恢复；
 4. A再次前进到B时，B重新生成，不从缓存中恢复。
 
-**！重要：因为浏览器不提供页面前进与后退事件，所以本库需要维护一份路由记录来判断前进后退行为，所以目前路由记录中不允许包含重复的路由，现在前进到存在的路由将被重置为返回行为**
+**！重要：因为浏览器不提供页面前进与后退事件，所以本库需要维护一份路由记录来判断前进后退行为，所以目前路由记录中不允许包含重复的路由，现在前进到存在的路由将被识别为返回行为**
 
 ### 在线演示
 
@@ -50,8 +50,6 @@ App.vue
 </template>
 ```
 
-在全局环境中调用 `Vue.navigation.getRoutes()` 或在Vue实例中调用 `this.$navigation.getRoutes()` 都可以获取页面导航路径。
-
 ### 搭配vuex2使用
 
 main.js
@@ -73,3 +71,9 @@ Vue.use(Navigation, {router, store})
 ```javascript
 Vue.use(Navigation, {router, store, moduleName: 'name'})
 ```
+## 方法
+
+在全局环境中使用 `Vue.navigation` 或在Vue实例中使用 `this.$navigation`
+
+- `getRoutes()` 获取路由记录
+- `cleanRoutes()` 清空路由记录

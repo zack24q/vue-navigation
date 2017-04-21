@@ -14,7 +14,7 @@ vue-navigation default behavior is similar to native mobile app (A、B、C are p
 3. B back to A，A will **recover from cache**;
 4. A forward to B again，B will **rebuild, not recover from cache**.
 
-**!important: Because the browser does not provide page forward and backward events, so the library needs to maintain a routing record to determine the forward and backward behavior, so the current routing records are not allowed to contain duplicate routes, and now forward to the existing route will be reset to return behavior**
+**!important: Because the browser does not provide page forward and backward events, so the library needs to maintain a routing record to determine the forward and backward behavior, so the current routing records are not allowed to contain duplicate routes, and now forward to the existing route will be identified as backward behavior**
 
 ### DEMO
 
@@ -52,8 +52,6 @@ App.vue
 </template>
 ```
 
-Call `Vue.navigation.getRoutes()` in global environment or call `this.$navigation.getRoutes()` in vue instance can get the page navigation path.
-
 ### Use with vuex2
 
 main.js
@@ -75,3 +73,10 @@ You can set the name of the module yourself:
 ```javascript
 Vue.use(Navigation, {router, store, moduleName: 'name'})
 ```
+
+## Methods
+
+Use `Vue.navigation` in global environment or use `this.$navigation` in vue instance
+
+- `getRoutes()` get the routing records
+- `cleanRoutes()` clean the routing records

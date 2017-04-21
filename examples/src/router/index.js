@@ -6,7 +6,7 @@ import Detail from '../pages/detail.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'hash',
   routes: [
     {
@@ -24,3 +24,5 @@ export default new Router({
     },
   ]
 })
+
+export default router

@@ -3,7 +3,7 @@
     <div class="detail">
       <p>This is the <b>detail</b> page, detail id is {{id}}</p>
       <p>random number: {{random}}</p>
-      <router-link :to="'/'">go to index</router-link>
+      <a href="javascript:void(0)" @click="resetToIndex">reset to index</a>
     </div>
   </page>
 </template>
@@ -23,6 +23,14 @@
     },
     deactivated() {
       console.log('detail deactivated')
+    },
+    methods: {
+      resetToIndex(){
+        // clean the routes
+        this.$navigation.cleanRoutes()
+        // jump to index
+        this.$router.push('/')
+      }
     }
   }
 </script>

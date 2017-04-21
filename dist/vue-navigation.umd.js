@@ -1,5 +1,5 @@
 /**
-* vue-navigation v0.1.4
+* vue-navigation v0.2.0
 * https://github.com/zack24q/vue-navigation
 * Released under the MIT License.
 */
@@ -34,6 +34,9 @@ var Navigator = function (store, moduleName) {
           state.routes.splice(state.routes.length - count, count);
         },
         'navigation/REFRESH': function (state, count) {
+        },
+        'navigation/RESET': function (state) {
+          state.routes = [];
         }
       }
     });
@@ -53,6 +56,11 @@ var Navigator = function (store, moduleName) {
     store ? store.commit('navigation/REFRESH') : null;
     development ? console.info('navigation: refresh') : null;
   };
+  var reset = function () {
+    store ? store.commit('navigation/RESET') : Routes.splice(0, Routes.length);
+    window.sessionStorage.VUE_NAVIGATION = JSON.stringify([]);
+    development ? console.info('navigation: reset') : null;
+  };
 
   var record = function (name) {
     var toIndex = Routes.lastIndexOf(name);
@@ -66,7 +74,7 @@ var Navigator = function (store, moduleName) {
   };
 
   return {
-    record: record
+    record: record, reset: reset
   }
 };
 
@@ -103,7 +111,6 @@ var index = {
     }
 
     var navigator = Navigator(store, moduleName);
-    var backFlag = false;
 
     // init page name
     router.beforeEach(function (to, from, next) {
@@ -111,29 +118,8 @@ var index = {
       if (matched) {
         var component = matched.components.default;
         component.name = component.name || 'anonymous-component-' + matched.path;
-
-        var toIndex = Routes.lastIndexOf(component.name);
-        if (toIndex === -1) {
-          // forward
-          next();
-        } else if (toIndex === Routes.length - 1) {
-          // refresh
-          next();
-        } else {
-          // back
-          if (backFlag) {
-            backFlag = false;
-            next();
-          } else {
-            backFlag = true;
-            next(false);
-            window.history.go(toIndex + 1 - Routes.length);
-          }
-
-        }
-      } else {
-        next();
       }
+      next();
     });
 
     // handle router change
@@ -148,7 +134,8 @@ var index = {
     Vue.component('navigation', NavComponent);
 
     Vue.navigation = Vue.prototype.$navigation = {
-      getRoutes: function () { return Routes.slice(); }
+      getRoutes: function () { return Routes.slice(); },
+      cleanRoutes: function () { return navigator.reset(); }
     };
   }
 };

@@ -23,7 +23,7 @@
     margin: 0;
   }
 
-  p{
+  p {
     margin: .5em 0;
   }
 
