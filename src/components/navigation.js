@@ -2,6 +2,7 @@ import Routes from '../routes'
 
 export default {
   name: 'navigation',
+  abstract: true,
   props: {},
   data: () => ({
     routes: Routes

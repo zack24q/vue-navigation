@@ -1,5 +1,5 @@
 /**
-* vue-navigation v0.2.0
+* vue-navigation v0.2.1
 * https://github.com/zack24q/vue-navigation
 * Released under the MIT License.
 */
@@ -74,6 +74,7 @@ var Navigator = function (store, moduleName) {
 
 var NavComponent = {
   name: 'navigation',
+  abstract: true,
   props: {},
   data: function () { return ({
     routes: Routes
