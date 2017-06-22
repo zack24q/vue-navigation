@@ -1,5 +1,5 @@
 /**
-* vue-navigation v0.2.1
+* vue-navigation v0.2.2
 * https://github.com/zack24q/vue-navigation
 * Released under the MIT License.
 */
@@ -96,7 +96,7 @@ var NavComponent = {
       {props: {include: this.historyStr}},
       this.$slots.default
     )
-  },
+  }
 };
 
 var index = {
@@ -116,17 +116,27 @@ var index = {
     // init page name
     router.beforeEach(function (to, from, next) {
       var matched = to.matched[0];
-      if (matched) {
+      if (matched && matched.components) {
         var component = matched.components.default;
-        component.name = component.name || 'anonymous-component-' + matched.path;
+        // async component
+        if (typeof component === 'function') {
+          matched.components.default = function (r) {
+            component(function (c) {
+              c.name = c.name || 'anonymous-component-' + matched.path;
+              r(c);
+            });
+          };
+        } else {
+          component.name = component.name || 'anonymous-component-' + matched.path;
+        }
       }
       next();
     });
 
     // handle router change
-    router.afterEach(function (to, from) {
+    router.afterEach(function (to) {
       var matched = to.matched[0];
-      if (matched) {
+      if (matched && matched.components) {
         var component = matched.components.default;
         navigator.record(component.name);
       }

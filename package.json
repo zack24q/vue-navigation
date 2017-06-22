@@ -1,6 +1,6 @@
 {
   "name": "vue-navigation",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A page navigation library, built with vue2 and vue-router2.",
   "keywords": [
     "navigation",
@@ -77,7 +77,7 @@
     "webpack-merge": "^2.6.1"
   },
   "engines": {
-    "node": ">= 7.0.0",
+    "node": ">= 6.0.0",
     "npm": ">= 3.0.0"
   },
   "browserslist": [
