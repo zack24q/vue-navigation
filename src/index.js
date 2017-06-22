@@ -14,17 +14,27 @@ export default {
     // init page name
     router.beforeEach((to, from, next) => {
       let matched = to.matched[0]
-      if (matched) {
+      if (matched && matched.components) {
         let component = matched.components.default
-        component.name = component.name || 'anonymous-component-' + matched.path
+        // async component
+        if (typeof component === 'function') {
+          matched.components.default = (r) => {
+            component((c) => {
+              c.name = c.name || 'anonymous-component-' + matched.path
+              r(c)
+            })
+          }
+        } else {
+          component.name = component.name || 'anonymous-component-' + matched.path
+        }
       }
       next()
     })
 
     // handle router change
-    router.afterEach((to, from) => {
+    router.afterEach((to) => {
       let matched = to.matched[0]
-      if (matched) {
+      if (matched && matched.components) {
         let component = matched.components.default
         navigator.record(component.name)
       }
