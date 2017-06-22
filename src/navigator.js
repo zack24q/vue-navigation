@@ -1,6 +1,6 @@
 import Routes from './routes'
 
-var development = process.env.NODE_ENV === 'development'
+const development = process.env.NODE_ENV === 'development'
 
 export default (store, moduleName) => {
   if (store) {
@@ -24,28 +24,28 @@ export default (store, moduleName) => {
     })
   }
 
-  var forward = name => {
+  const forward = name => {
     store ? store.commit('navigation/FORWARD', name) : Routes.push(name)
     window.sessionStorage.VUE_NAVIGATION = JSON.stringify(Routes)
     development ? console.info('navigation: forward') : null
   }
-  var back = count => {
+  const back = count => {
     store ? store.commit('navigation/BACK', count) : Routes.splice(Routes.length - count, count)
     window.sessionStorage.VUE_NAVIGATION = JSON.stringify(Routes)
     development ? console.info('navigation: back') : null
   }
-  var refresh = () => {
+  const refresh = () => {
     store ? store.commit('navigation/REFRESH') : null
     development ? console.info('navigation: refresh') : null
   }
-  var reset = () => {
+  const reset = () => {
     store ? store.commit('navigation/RESET') : Routes.splice(0, Routes.length)
     window.sessionStorage.VUE_NAVIGATION = JSON.stringify([])
     development ? console.info('navigation: reset') : null
   }
 
-  var record = name => {
-    var toIndex = Routes.lastIndexOf(name)
+  const record = name => {
+    const toIndex = Routes.lastIndexOf(name)
     if (toIndex === -1) {
       forward(name)
     } else if (toIndex === Routes.length - 1) {

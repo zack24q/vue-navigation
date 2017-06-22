@@ -18,5 +18,5 @@ export default {
       {props: {include: this.historyStr}},
       this.$slots.default
     )
-  },
+  }
 }
