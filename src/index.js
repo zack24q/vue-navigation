@@ -9,23 +9,26 @@ export default {
       return
     }
 
-    let navigator = Navigator(store, moduleName)
+    const bus = new Vue()
+    const navigator = Navigator(bus, store, moduleName)
 
     // init page name
     router.beforeEach((to, from, next) => {
       let matched = to.matched[0]
       if (matched && matched.components) {
         let component = matched.components.default
-        // async component
         if (typeof component === 'function') {
+          // async component
           matched.components.default = (r) => {
             component((c) => {
-              c.name = c.name || 'anonymous-component-' + matched.path
+              c.name = c.name || 'AC-' + matched.path
+              // for dev environment
+              c._Ctor && (c._Ctor[0].options.name = c.name)
               r(c)
             })
           }
         } else {
-          component.name = component.name || 'anonymous-component-' + matched.path
+          component.name = component.name || 'AC-' + matched.path
         }
       }
       next()
@@ -43,6 +46,15 @@ export default {
     Vue.component('navigation', NavComponent)
 
     Vue.navigation = Vue.prototype.$navigation = {
+      on: (event, callback) => {
+        bus.$on(event, callback)
+      },
+      once: (event, callback) => {
+        bus.$once(event, callback)
+      },
+      off: (event, callback) => {
+        bus.$off(event, callback)
+      },
       getRoutes: () => Routes.slice(),
       cleanRoutes: () => navigator.reset()
     }

@@ -11,10 +11,29 @@
 <script>
   export default {
     name: 'app',
-    methods: {
-      back () {
-        window.history.back()
+    created(){
+      // bind event
+      this.$navigation.on('forward', (from, to) => {
+        console.log(`forward from ${from} to ${to}`)
+      })
+      this.$navigation.on('back', (from, to) => {
+        console.log(`back from ${from} to ${to}`)
+      })
+      this.$navigation.on('refresh', (current) => {
+        console.log(`refresh ${current}`)
+      })
+      this.$navigation.on('reset', () => {
+        console.log(`reset`)
+      })
+      // and use [once, off] methods
+      this.$navigation.once('forward', (from, to) => {
+        console.log('once')
+      })
+      const off = () => {
+        console.log('off')
       }
+      this.$navigation.on('forward', off)
+      this.$navigation.off('forward', off)
     }
   }
 </script>

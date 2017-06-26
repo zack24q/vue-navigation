@@ -50,6 +50,17 @@ App.vue
 </template>
 ```
 
+### 事件
+方法: [ `on` | `once` | `off` ]
+
+事件类型: [ `forward` | `back` | `refresh` | `reset` ]
+```javascript
+this.$navigation.on('forward', (from, to) => {})
+this.$navigation.once('back', (from, to) => {})
+this.$navigation.off('refresh', (current) => {})
+this.$navigation.on('reset', () => {})
+```
+
 ### 搭配vuex2使用
 
 main.js

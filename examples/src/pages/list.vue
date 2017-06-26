@@ -13,6 +13,7 @@
 <script>
   import Page from '../components/Page.vue'
   export default{
+    name: 'list',
     components: {Page},
     data(){
       return {
@@ -20,10 +21,10 @@
       }
     },
     activated() {
-      console.log('list activated')
+      // console.log('list activated')
     },
     deactivated() {
-      console.log('list deactivated')
+      // console.log('list deactivated')
     }
   }
 </script>

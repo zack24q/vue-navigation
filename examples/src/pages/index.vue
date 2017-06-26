@@ -11,6 +11,7 @@
 <script>
   import Page from '../components/Page.vue'
   export default{
+    name: 'index',
     components: {Page},
     data(){
       return {
@@ -18,10 +19,10 @@
       }
     },
     activated() {
-      console.log('index activated')
+      // console.log('index activated')
     },
     deactivated() {
-      console.log('index deactivated')
+      // console.log('index deactivated')
     }
   }
 </script>

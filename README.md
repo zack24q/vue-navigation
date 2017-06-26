@@ -52,6 +52,17 @@ App.vue
 </template>
 ```
 
+### Events
+functions: [ `on` | `once` | `off` ]
+
+event types: [ `forward` | `back` | `refresh` | `reset` ]
+```javascript
+this.$navigation.on('forward', (from, to) => {})
+this.$navigation.once('back', (from, to) => {})
+this.$navigation.off('refresh', (current) => {})
+this.$navigation.on('reset', () => {})
+```
+
 ### Use with vuex2
 
 main.js

@@ -2,7 +2,7 @@ import Routes from './routes'
 
 const development = process.env.NODE_ENV === 'development'
 
-export default (store, moduleName) => {
+export default (bus, store, moduleName) => {
   if (store) {
     store.registerModule(moduleName, {
       state: {
@@ -25,22 +25,54 @@ export default (store, moduleName) => {
   }
 
   const forward = name => {
-    store ? store.commit('navigation/FORWARD', name) : Routes.push(name)
+    let from, to
+    if (store) {
+      const r = store.state.routes
+      from = r[r.length - 1]
+      store.commit('navigation/FORWARD', name)
+      to = r[r.length - 1]
+    } else {
+      from = Routes[Routes.length - 1]
+      Routes.push(name)
+      to = Routes[Routes.length - 1]
+    }
     window.sessionStorage.VUE_NAVIGATION = JSON.stringify(Routes)
-    development ? console.info('navigation: forward') : null
+    // if from does not exist, it will be set null
+    bus.$emit('forward', from || null, to)
+    development ? console.info(`navigation: forward from ${from} to ${to}`) : null
   }
   const back = count => {
-    store ? store.commit('navigation/BACK', count) : Routes.splice(Routes.length - count, count)
+    let from, to
+    if (store) {
+      const r = store.state.routes
+      from = r[r.length - 1]
+      store.commit('navigation/BACK', count)
+      to = r[r.length - 1]
+    } else {
+      from = Routes[Routes.length - 1]
+      Routes.splice(Routes.length - count, count)
+      to = Routes[Routes.length - 1]
+    }
     window.sessionStorage.VUE_NAVIGATION = JSON.stringify(Routes)
-    development ? console.info('navigation: back') : null
+    bus.$emit('back', from, to)
+    development ? console.info(`navigation: back from ${from} to ${to}`) : null
   }
   const refresh = () => {
-    store ? store.commit('navigation/REFRESH') : null
-    development ? console.info('navigation: refresh') : null
+    let current
+    if (store) {
+      const r = store.state.routes
+      current = r[r.length - 1]
+      store.commit('navigation/REFRESH')
+    } else {
+      current = Routes[Routes.length - 1]
+    }
+    bus.$emit('refresh', current)
+    development ? console.info(`navigation: refresh ${current}`) : null
   }
   const reset = () => {
     store ? store.commit('navigation/RESET') : Routes.splice(0, Routes.length)
     window.sessionStorage.VUE_NAVIGATION = JSON.stringify([])
+    bus.$emit('reset')
     development ? console.info('navigation: reset') : null
   }
 

@@ -11,6 +11,7 @@
 <script>
   import Page from '../components/Page.vue'
   export default{
+    name: 'detail',
     components: {Page},
     data(){
       return {
@@ -19,10 +20,10 @@
       }
     },
     activated() {
-      console.log('detail activated')
+      // console.log('detail activated')
     },
     deactivated() {
-      console.log('detail deactivated')
+      // console.log('detail deactivated')
     },
     methods: {
       resetToIndex(){
