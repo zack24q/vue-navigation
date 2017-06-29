@@ -13,20 +13,20 @@
     name: 'app',
     created(){
       // bind event
-      this.$navigation.on('forward', (from, to) => {
-        console.log(`forward from ${from} to ${to}`)
+      this.$navigation.on('forward', (to, from) => {
+        console.log('forward to', to, 'from ', from)
       })
-      this.$navigation.on('back', (from, to) => {
-        console.log(`back from ${from} to ${to}`)
+      this.$navigation.on('back', (to, from) => {
+        console.log('back to', to, 'from ', from)
       })
-      this.$navigation.on('refresh', (current) => {
-        console.log(`refresh ${current}`)
+      this.$navigation.on('refresh', (to, from) => {
+        console.log('refresh to', to, 'from ', from)
       })
       this.$navigation.on('reset', () => {
-        console.log(`reset`)
+        console.log('reset')
       })
       // and use [once, off] methods
-      this.$navigation.once('forward', (from, to) => {
+      this.$navigation.once('forward', () => {
         console.log('once')
       })
       const off = () => {

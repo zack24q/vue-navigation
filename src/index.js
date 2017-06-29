@@ -35,11 +35,11 @@ export default {
     })
 
     // handle router change
-    router.afterEach((to) => {
+    router.afterEach((to, from) => {
       let matched = to.matched[0]
       if (matched && matched.components) {
         let component = matched.components.default
-        navigator.record(component.name)
+        navigator.record(component.name, to, from)
       }
     })
 

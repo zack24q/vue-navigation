@@ -54,10 +54,19 @@ App.vue
 方法: [ `on` | `once` | `off` ]
 
 事件类型: [ `forward` | `back` | `refresh` | `reset` ]
+
+参数( `to` | `from` ) 的属性:
+- name
+  - 类型: string
+  - 描述: 与路由对应的组件的名称
+- route:
+  - 类型: object
+  - 描述: vue-route的路由信息对象
+
 ```javascript
-this.$navigation.on('forward', (from, to) => {})
-this.$navigation.once('back', (from, to) => {})
-this.$navigation.off('refresh', (current) => {})
+this.$navigation.on('forward', (to, from) => {})
+this.$navigation.once('back', (to, from) => {})
+this.$navigation.off('refresh', (to, from) => {})
 this.$navigation.on('reset', () => {})
 ```
 

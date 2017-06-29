@@ -56,10 +56,19 @@ App.vue
 functions: [ `on` | `once` | `off` ]
 
 event types: [ `forward` | `back` | `refresh` | `reset` ]
+
+parameter( `to` | `from` ) properties:
+- name
+  - type: string
+  - desc: name of the component corresponding to the route
+- route:
+  - type: object
+  - desc: vue-route`s route object
+
 ```javascript
-this.$navigation.on('forward', (from, to) => {})
-this.$navigation.once('back', (from, to) => {})
-this.$navigation.off('refresh', (current) => {})
+this.$navigation.on('forward', (to, from) => {})
+this.$navigation.once('back', (to, from) => {})
+this.$navigation.off('refresh', (to, from) => {})
 this.$navigation.on('reset', () => {})
 ```
 
