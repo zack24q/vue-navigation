@@ -1,5 +1,5 @@
 /**
-* vue-navigation v0.4.0
+* vue-navigation v0.5.0
 * https://github.com/zack24q/vue-navigation
 * Released under the MIT License.
 */
@@ -12,7 +12,7 @@ if (window.sessionStorage.VUE_NAVIGATION) {
 
 var Routes = routes;
 
-var development = process.env.NODE_ENV === 'development';
+// const development = process.env.NODE_ENV === 'development'
 
 var Navigator = function (bus, store, moduleName) {
   if (store) {
@@ -21,87 +21,65 @@ var Navigator = function (bus, store, moduleName) {
         routes: Routes
       },
       mutations: {
-        'navigation/FORWARD': function (state, name) {
+        'navigation/FORWARD': function (state, ref) {
+          var to = ref.to;
+          var from = ref.from;
+          var name = ref.name;
+
           state.routes.push(name);
         },
-        'navigation/BACK': function (state, count) {
+        'navigation/BACK': function (state, ref) {
+          var to = ref.to;
+          var from = ref.from;
+          var count = ref.count;
+
           state.routes.splice(state.routes.length - count, count);
         },
-        'navigation/REFRESH': function (state, count) {
+        'navigation/REFRESH': function (state, ref) {
+          var to = ref.to;
+          var from = ref.from;
+
         },
         'navigation/RESET': function (state) {
-          state.routes = [];
+          state.routes.splice(0, state.routes.length);
         }
       }
     });
   }
 
   var forward = function (name, toRoute, fromRoute) {
-    var to = {
-      route: toRoute
-    };
-    var from = {
-      route: fromRoute
-    };
-    if (store) {
-      var r = store.state.routes;
-      from.name = r[r.length - 1];
-      store.commit('navigation/FORWARD', name);
-      to.name = r[r.length - 1];
-    } else {
-      from.name = Routes[Routes.length - 1];
-      Routes.push(name);
-      to.name = Routes[Routes.length - 1];
-    }
+    var to = {route: toRoute};
+    var from = {route: fromRoute};
+    var route = store ? store.state[moduleName].routes : Routes;
     // if from does not exist, it will be set null
-    from.name = from.name || null;
-    window.sessionStorage.VUE_NAVIGATION = JSON.stringify(Routes);
+    from.name = route[route.length - 1] || null;
+    to.name = name;
+    store ? store.commit('navigation/FORWARD', {to: to, from: from, name: name}) : route.push(name);
+    window.sessionStorage.VUE_NAVIGATION = JSON.stringify(route);
     bus.$emit('forward', to, from);
-    development ? console.info('navigation: forward to ', to, ' from ', from) : null;
   };
   var back = function (count, toRoute, fromRoute) {
-    var to = {
-      route: toRoute
-    };
-    var from = {
-      route: fromRoute
-    };
-    if (store) {
-      var r = store.state.routes;
-      from.name = r[r.length - 1];
-      store.commit('navigation/BACK', count);
-      to.name = r[r.length - 1];
-    } else {
-      from.name = Routes[Routes.length - 1];
-      Routes.splice(Routes.length - count, count);
-      to.name = Routes[Routes.length - 1];
-    }
-    window.sessionStorage.VUE_NAVIGATION = JSON.stringify(Routes);
+    var to = {route: toRoute};
+    var from = {route: fromRoute};
+    var route = store ? store.state[moduleName].routes : Routes;
+    from.name = route[route.length - 1];
+    to.name = route[route.length - 1 - count];
+    store ? store.commit('navigation/BACK', {to: to, from: from, count: count}) : route.splice(Routes.length - count, count);
+    window.sessionStorage.VUE_NAVIGATION = JSON.stringify(route);
     bus.$emit('back', to, from);
-    development ? console.info('navigation: back to ', to, ' from ', from) : null;
   };
   var refresh = function (toRoute, fromRoute) {
-    var to = {
-      route: toRoute
-    };
-    var from = {
-      route: fromRoute
-    };
-    if (store) {
-      var r = store.state.routes;
-      from.name = to.name = r[r.length - 1];
-      store.commit('navigation/REFRESH');
-    } else {
-      from.name = to.name = Routes[Routes.length - 1];
-    }
+    var to = {route: toRoute};
+    var from = {route: fromRoute};
+    var route = store ? store.state[moduleName].routes : Routes;
+    to.name = from.name = route[route.length - 1];
+    store ? store.commit('navigation/REFRESH', {to: to, from: from}) : null;
     bus.$emit('refresh', to, from);
-    development ? console.info('navigation: refresh to ', to, ' from ', from) : null;
   };
   var reset = function () {
     store ? store.commit('navigation/RESET') : Routes.splice(0, Routes.length);
     window.sessionStorage.VUE_NAVIGATION = JSON.stringify([]);
     bus.$emit('reset');
-    development ? console.info('navigation: reset') : null;
   };
 
   var record = function (name, toRoute, fromRoute) {

@@ -1,6 +1,6 @@
 import Routes from './routes'
 
-const development = process.env.NODE_ENV === 'development'
+// const development = process.env.NODE_ENV === 'development'
 
 export default (bus, store, moduleName) => {
   if (store) {
@@ -9,87 +9,54 @@ export default (bus, store, moduleName) => {
         routes: Routes
       },
       mutations: {
-        'navigation/FORWARD': (state, name) => {
+        'navigation/FORWARD': (state, {to, from, name}) => {
           state.routes.push(name)
         },
-        'navigation/BACK': (state, count) => {
+        'navigation/BACK': (state, {to, from, count}) => {
           state.routes.splice(state.routes.length - count, count)
         },
-        'navigation/REFRESH': (state, count) => {
+        'navigation/REFRESH': (state, {to, from}) => {
         },
         'navigation/RESET': (state) => {
-          state.routes = []
+          state.routes.splice(0, state.routes.length)
         }
       }
     })
   }
 
   const forward = (name, toRoute, fromRoute) => {
-    const to = {
-      route: toRoute
-    }
-    const from = {
-      route: fromRoute
-    }
-    if (store) {
-      const r = store.state.routes
-      from.name = r[r.length - 1]
-      store.commit('navigation/FORWARD', name)
-      to.name = r[r.length - 1]
-    } else {
-      from.name = Routes[Routes.length - 1]
-      Routes.push(name)
-      to.name = Routes[Routes.length - 1]
-    }
+    const to = {route: toRoute}
+    const from = {route: fromRoute}
+    const route = store ? store.state[moduleName].routes : Routes
     // if from does not exist, it will be set null
-    from.name = from.name || null
-    window.sessionStorage.VUE_NAVIGATION = JSON.stringify(Routes)
+    from.name = route[route.length - 1] || null
+    to.name = name
+    store ? store.commit('navigation/FORWARD', {to, from, name}) : route.push(name)
+    window.sessionStorage.VUE_NAVIGATION = JSON.stringify(route)
     bus.$emit('forward', to, from)
-    development ? console.info('navigation: forward to ', to, ' from ', from) : null
   }
   const back = (count, toRoute, fromRoute) => {
-    const to = {
-      route: toRoute
-    }
-    const from = {
-      route: fromRoute
-    }
-    if (store) {
-      const r = store.state.routes
-      from.name = r[r.length - 1]
-      store.commit('navigation/BACK', count)
-      to.name = r[r.length - 1]
-    } else {
-      from.name = Routes[Routes.length - 1]
-      Routes.splice(Routes.length - count, count)
-      to.name = Routes[Routes.length - 1]
-    }
-    window.sessionStorage.VUE_NAVIGATION = JSON.stringify(Routes)
+    const to = {route: toRoute}
+    const from = {route: fromRoute}
+    const route = store ? store.state[moduleName].routes : Routes
+    from.name = route[route.length - 1]
+    to.name = route[route.length - 1 - count]
+    store ? store.commit('navigation/BACK', {to, from, count}) : route.splice(Routes.length - count, count)
+    window.sessionStorage.VUE_NAVIGATION = JSON.stringify(route)
     bus.$emit('back', to, from)
-    development ? console.info('navigation: back to ', to, ' from ', from) : null
   }
   const refresh = (toRoute, fromRoute) => {
-    const to = {
-      route: toRoute
-    }
-    const from = {
-      route: fromRoute
-    }
-    if (store) {
-      const r = store.state.routes
-      from.name = to.name = r[r.length - 1]
-      store.commit('navigation/REFRESH')
-    } else {
-      from.name = to.name = Routes[Routes.length - 1]
-    }
+    const to = {route: toRoute}
+    const from = {route: fromRoute}
+    const route = store ? store.state[moduleName].routes : Routes
+    to.name = from.name = route[route.length - 1]
+    store ? store.commit('navigation/REFRESH', {to, from}) : null
     bus.$emit('refresh', to, from)
-    development ? console.info('navigation: refresh to ', to, ' from ', from) : null
   }
   const reset = () => {
     store ? store.commit('navigation/RESET') : Routes.splice(0, Routes.length)
     window.sessionStorage.VUE_NAVIGATION = JSON.stringify([])
     bus.$emit('reset')
-    development ? console.info('navigation: reset') : null
   }
 
   const record = (name, toRoute, fromRoute) => {

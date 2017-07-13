@@ -27,10 +27,10 @@
       })
       // and use [once, off] methods
       this.$navigation.once('forward', () => {
-        console.log('once')
+        console.log('appear once')
       })
       const off = () => {
-        console.log('off')
+        console.log('will not appear')
       }
       this.$navigation.on('forward', off)
       this.$navigation.off('forward', off)
