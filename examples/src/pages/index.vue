@@ -10,10 +10,11 @@
 
 <script>
   import Page from '../components/Page.vue'
-  export default{
+
+  export default {
     name: 'index',
     components: {Page},
-    data(){
+    data() {
       return {
         random: Math.random().toFixed(4)
       }

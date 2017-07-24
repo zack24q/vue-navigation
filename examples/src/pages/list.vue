@@ -12,10 +12,11 @@
 
 <script>
   import Page from '../components/Page.vue'
-  export default{
+
+  export default {
     name: 'list',
     components: {Page},
-    data(){
+    data() {
       return {
         random: Math.random().toFixed(4)
       }

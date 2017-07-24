@@ -26,6 +26,12 @@
 npm i -S vue-navigation
 ```
 
+或
+
+```bash
+yarn add vue-navigation
+```
+
 ## 使用
 
 ### 基础使用

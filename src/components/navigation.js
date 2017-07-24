@@ -8,11 +8,11 @@ export default {
     routes: Routes
   }),
   computed: {
-    historyStr () {
+    historyStr() {
       return this.routes.join(',')
     }
   },
-  render (createElement) {
+  render(createElement) {
     return createElement(
       'keep-alive',
       {props: {include: this.historyStr}},
