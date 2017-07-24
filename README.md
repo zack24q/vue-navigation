@@ -28,6 +28,12 @@ vue-navigation default behavior is similar to native mobile app (A、B、C are p
 npm i -S vue-navigation
 ```
 
+or
+
+```bash
+yarn add vue-navigation
+```
+
 ## Usage
 
 ### Basic Usage

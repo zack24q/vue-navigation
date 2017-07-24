@@ -11,7 +11,7 @@
 <script>
   export default {
     name: 'app',
-    created(){
+    created() {
       // bind event
       this.$navigation.on('forward', (to, from) => {
         console.log('forward to', to, 'from ', from)

@@ -1,5 +1,5 @@
 /**
-* vue-navigation v0.5.0
+* vue-navigation v0.5.1
 * https://github.com/zack24q/vue-navigation
 * Released under the MIT License.
 */
@@ -112,11 +112,11 @@ var NavComponent = {
     routes: Routes
   }); },
   computed: {
-    historyStr: function historyStr () {
+    historyStr: function historyStr() {
       return this.routes.join(',')
     }
   },
-  render: function render (createElement) {
+  render: function render(createElement) {
     return createElement(
       'keep-alive',
       {props: {include: this.historyStr}},
