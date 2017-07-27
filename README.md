@@ -9,12 +9,12 @@
 
 vue-navigation default behavior is similar to native mobile app (A、B、C are pages):
 
-1. A forward to B，then forward to C;
-2. C back to B，B will **recover from cache**;
-3. B back to A，A will **recover from cache**;
-4. A forward to B again，B will **rebuild, not recover from cache**.
+1. A forward to B, then forward to C;
+2. C back to B, B will **recover from cache**;
+3. B forward to C again, C will **rebuild, not recover from cache**;
+4. C forward to A, A will **build, now the route contains two A instance**.
 
-**!important: Because the browser does not provide page forward and backward events, so the library needs to maintain a routing record to determine the forward and backward behavior, so the current routing records are not allowed to contain duplicate routes, and now forward to the existing route will be identified as backward behavior**
+**!important: vue-navigation adds a key to the url to distinguish the route. The default name of the key is VNK, which can be modified.**
 
 ### DEMO
 
@@ -58,26 +58,6 @@ App.vue
 </template>
 ```
 
-### Events
-functions: [ `on` | `once` | `off` ]
-
-event types: [ `forward` | `back` | `refresh` | `reset` ]
-
-parameter( `to` | `from` ) properties:
-- name
-  - type: string
-  - desc: name of the component corresponding to the route
-- route:
-  - type: object
-  - desc: vue-route`s route object
-
-```javascript
-this.$navigation.on('forward', (to, from) => {})
-this.$navigation.once('back', (to, from) => {})
-this.$navigation.off('refresh', (to, from) => {})
-this.$navigation.on('reset', () => {})
-```
-
 ### Use with vuex2
 
 main.js
@@ -94,15 +74,37 @@ Vue.use(Navigation, {router, store})
 
 After passing in `store`, `vue-navigation` will register a module in `store` (default module name is `navigation`), and commit `navigation/FORWARD` or `navigation/BACK` or `navigation/REFRESH` when the page jumps.
 
-You can set the name of the module yourself:
+## Options
+
+Only `router` is required.
 
 ```javascript
-Vue.use(Navigation, {router, store, moduleName: 'name'})
+Vue.use(Navigation, {router, store, moduleName: 'navigation', keyName: 'VNK'})
+```
+
+## Events
+functions: [ `on` | `once` | `off` ]
+
+event types: [ `forward` | `back` | `refresh` | `reset` ]
+
+parameter( `to` | `from` ) properties:
+- `name`
+  - type: string
+  - desc: name of the route(contains the key)
+- `route`
+  - type: object
+  - desc: vue-route`s route object
+
+```javascript
+this.$navigation.on('forward', (to, from) => {})
+this.$navigation.once('back', (to, from) => {})
+this.$navigation.off('refresh', (to, from) => {})
+this.$navigation.on('reset', () => {})
 ```
 
 ## Methods
 
-Use `Vue.navigation` in global environment or use `this.$navigation` in vue instance
+Use `Vue.navigation` in global environment or use `this.$navigation` in vue instance.
 
 - `getRoutes()` get the routing records
 - `cleanRoutes()` clean the routing records

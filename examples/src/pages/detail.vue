@@ -5,7 +5,7 @@
       <p>random number: {{random}}</p>
       <a href="javascript:void(0)" @click="goToNextDetail">go to next detail</a>
       <br>
-      <a href="javascript:void(0)" @click="resetToIndex">reset to index</a>
+      <a href="javascript:void(0)" @click="goToIndex">go to index</a>
     </div>
   </page>
 </template>
@@ -14,7 +14,6 @@
   import Page from '../components/Page.vue'
 
   export default {
-    name: 'detail',
     components: {Page},
     data() {
       return {
@@ -28,17 +27,11 @@
     deactivated() {
       // console.log('detail deactivated')
     },
-    beforeRouteUpdate(to, from, next) {
-      this.id = Number(to.params.id)
-      next()
-    },
     methods: {
       goToNextDetail() {
         this.$router.push(`/list/${this.id >= 30 ? 30 : this.id + 1}`)
       },
-      resetToIndex() {
-        // clean the routes
-        this.$navigation.cleanRoutes()
+      goToIndex() {
         // jump to index
         this.$router.push('/')
       }

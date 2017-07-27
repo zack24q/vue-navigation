@@ -10,17 +10,20 @@ const Detail = r => require.ensure([], () => r(require('../pages/detail.vue')), 
 Vue.use(Router)
 
 const router = new Router({
-  mode: 'hash',
+  mode: 'history',
   routes: [
     {
+      name: 'index',
       path: '/',
       component: Index
     },
     {
+      name: 'list',
       path: '/list',
       component: List
     },
     {
+      name: 'detail',
       path: '/list/:id',
       component: Detail
     },

@@ -1,49 +1,36 @@
 import Routes from './routes'
 import Navigator from './navigator'
 import NavComponent from './components/navigation'
+import {genKey} from './utils'
 
 export default {
-  install: (Vue, {router, store, moduleName = 'navigation'} = {}) => {
+  install: (Vue, {router, store, moduleName = 'navigation', keyName = 'VNK'} = {}) => {
     if (!router) {
       console.error('vue-navigation need options: router')
       return
     }
 
     const bus = new Vue()
-    const navigator = Navigator(bus, store, moduleName)
+    const navigator = Navigator(bus, store, moduleName, keyName)
 
-    // init page name
+    // init router`s keyName
     router.beforeEach((to, from, next) => {
-      let matched = to.matched[0]
-      if (matched && matched.components) {
-        let component = matched.components.default
-        if (typeof component === 'function') {
-          // async component
-          matched.components.default = (r) => {
-            component((c) => {
-              c.name = c.name || 'AC-' + matched.path
-              // for dev environment
-              c._Ctor && (c._Ctor[0].options.name = c.name)
-              r(c)
-            })
-          }
-        } else {
-          component.name = component.name || 'AC-' + matched.path
-        }
+      if (!to.query[keyName]) {
+        const query = {...to.query}
+        query[keyName] = genKey()
+        next({path: to.path, query, replace: !from.query[keyName]})
+      } else {
+        next()
       }
-      next()
     })
 
-    // handle router change
+    // record router change
     router.afterEach((to, from) => {
-      let matched = to.matched[0]
-      if (matched && matched.components) {
-        let component = matched.components.default
-        navigator.record(component.name, to, from)
-      }
+      navigator.record(to, from)
+      // router.push({path: to.path, query: to.query})
     })
 
-    Vue.component('navigation', NavComponent)
+    Vue.component('navigation', NavComponent(keyName))
 
     Vue.navigation = Vue.prototype.$navigation = {
       on: (event, callback) => {

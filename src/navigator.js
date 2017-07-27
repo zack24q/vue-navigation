@@ -1,8 +1,7 @@
 import Routes from './routes'
+import {getKey} from './utils'
 
-// const development = process.env.NODE_ENV === 'development'
-
-export default (bus, store, moduleName) => {
+export default (bus, store, moduleName, keyName) => {
   if (store) {
     store.registerModule(moduleName, {
       state: {
@@ -59,7 +58,8 @@ export default (bus, store, moduleName) => {
     bus.$emit('reset')
   }
 
-  const record = (name, toRoute, fromRoute) => {
+  const record = (toRoute, fromRoute) => {
+    const name = getKey(toRoute, keyName)
     const toIndex = Routes.lastIndexOf(name)
     if (toIndex === -1) {
       forward(name, toRoute, fromRoute)

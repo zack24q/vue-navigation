@@ -14,7 +14,6 @@
   import Page from '../components/Page.vue'
 
   export default {
-    name: 'list',
     components: {Page},
     data() {
       return {
