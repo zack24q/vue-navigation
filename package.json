@@ -19,7 +19,8 @@
     "build": "node build/build.js",
     "build:examples": "cd examples && node build/build.js",
     "serve:examples:build": "cd docs/examples && anywhere",
-    "release": "npm run build && npm run build:examples && np"
+    "version": "npm run build && npm run build:examples && git add -A",
+    "release": "np --no-cleanup"
   },
   "repository": {
     "type": "git",
