@@ -1,6 +1,6 @@
 {
   "name": "vue-navigation",
-  "version": "1.0.0",
+  "version": "0.5.1",
   "description": "A page navigation library, built with vue2 and vue-router2.",
   "keywords": [
     "navigation",
@@ -15,11 +15,11 @@
     "examples"
   ],
   "scripts": {
+    "dev:examples": "cd examples && node build/dev-server.js",
     "build": "node build/build.js",
-    "examples-dev": "cd examples && node build/dev-server.js",
-    "examples-build": "cd examples && node build/build.js",
-    "serve-examples-build": "cd docs/examples && anywhere",
-    "np": "np"
+    "build:examples": "cd examples && node build/build.js",
+    "serve:examples:build": "cd docs/examples && anywhere",
+    "release": "npm run build && npm run build:examples && np"
   },
   "repository": {
     "type": "git",
