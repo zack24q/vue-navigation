@@ -18,7 +18,8 @@
     "build": "node build/build.js",
     "examples-dev": "cd examples && node build/dev-server.js",
     "examples-build": "cd examples && node build/build.js",
-    "serve-examples-build": "cd docs/examples && anywhere"
+    "serve-examples-build": "cd docs/examples && anywhere",
+    "np": "np"
   },
   "repository": {
     "type": "git",
@@ -59,6 +60,7 @@
     "function-bind": "^1.1.0",
     "html-webpack-plugin": "^2.28.0",
     "http-proxy-middleware": "^0.17.3",
+    "np": "^2.16.0",
     "opn": "^4.0.2",
     "optimize-css-assets-webpack-plugin": "^1.3.0",
     "ora": "^1.1.0",
