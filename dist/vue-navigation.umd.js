@@ -1,5 +1,5 @@
 /**
-* vue-navigation v1.0.0
+* vue-navigation v1.0.0-beta.1
 * https://github.com/zack24q/vue-navigation
 * Released under the MIT License.
 */
