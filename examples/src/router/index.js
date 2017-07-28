@@ -10,7 +10,7 @@ const Detail = r => require.ensure([], () => r(require('../pages/detail.vue')), 
 Vue.use(Router)
 
 const router = new Router({
-  mode: 'history',
+  mode: 'hash',
   routes: [
     {
       name: 'index',
