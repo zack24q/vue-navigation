@@ -3,6 +3,8 @@
     <div class="detail">
       <p>This is the <b>detail</b> page, detail id is {{id}}</p>
       <p>random number: {{random}}</p>
+      <a href="javascript:void(0)" @click="replaceToNextDetail">replace to next detail</a>
+      <br>
       <a href="javascript:void(0)" @click="goToNextDetail">go to next detail</a>
       <br>
       <a href="javascript:void(0)" @click="goToIndex">go to index</a>
@@ -28,6 +30,9 @@
       // console.log('detail deactivated')
     },
     methods: {
+      replaceToNextDetail() {
+        this.$router.replace(`/list/${this.id >= 30 ? 30 : this.id + 1}`)
+      },
       goToNextDetail() {
         this.$router.push(`/list/${this.id >= 30 ? 30 : this.id + 1}`)
       },

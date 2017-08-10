@@ -87,7 +87,7 @@ Vue.use(Navigation, {router, store, moduleName: 'navigation', keyName: 'VNK'})
 ### 事件
 方法: [ `on` | `once` | `off` ]
 
-事件类型: [ `forward` | `back` | `refresh` | `reset` ]
+事件类型: [ `forward` | `back` | `replace` | `refresh` | `reset` ]
 
 参数( `to` | `from` ) 的属性:
 - `name`
@@ -100,6 +100,7 @@ Vue.use(Navigation, {router, store, moduleName: 'navigation', keyName: 'VNK'})
 ```javascript
 this.$navigation.on('forward', (to, from) => {})
 this.$navigation.once('back', (to, from) => {})
+this.$navigation.on('replace', (to, from) => {})
 this.$navigation.off('refresh', (to, from) => {})
 this.$navigation.on('reset', () => {})
 ```

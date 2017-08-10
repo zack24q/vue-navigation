@@ -13,12 +13,20 @@ export default {
     const bus = new Vue()
     const navigator = Navigator(bus, store, moduleName, keyName)
 
+    // hack vue-router replace for replaceFlag
+    const routerReplace = router.replace.bind(router)
+    let replaceFlag = false
+    router.replace = (location, onComplete, onAbort) => {
+      replaceFlag = true
+      routerReplace(location, onComplete, onAbort)
+    }
+
     // init router`s keyName
     router.beforeEach((to, from, next) => {
       if (!to.query[keyName]) {
         const query = {...to.query}
         query[keyName] = genKey()
-        next({path: to.path, query, replace: !from.query[keyName]})
+        next({path: to.path, query, replace: replaceFlag || !from.query[keyName]})
       } else {
         next()
       }
@@ -26,8 +34,8 @@ export default {
 
     // record router change
     router.afterEach((to, from) => {
-      navigator.record(to, from)
-      // router.push({path: to.path, query: to.query})
+      navigator.record(to, from, replaceFlag)
+      replaceFlag = false
     })
 
     Vue.component('navigation', NavComponent(keyName))

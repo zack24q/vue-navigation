@@ -88,7 +88,7 @@ Vue.use(Navigation, {router, store, moduleName: 'navigation', keyName: 'VNK'})
 ## Events
 functions: [ `on` | `once` | `off` ]
 
-event types: [ `forward` | `back` | `refresh` | `reset` ]
+event types: [ `forward` | `back` | `replace` | `refresh` | `reset` ]
 
 parameter( `to` | `from` ) properties:
 - `name`
@@ -101,6 +101,7 @@ parameter( `to` | `from` ) properties:
 ```javascript
 this.$navigation.on('forward', (to, from) => {})
 this.$navigation.once('back', (to, from) => {})
+this.$navigation.on('replace', (to, from) => {})
 this.$navigation.off('refresh', (to, from) => {})
 this.$navigation.on('reset', () => {})
 ```

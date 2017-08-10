@@ -8,18 +8,21 @@ const store = new Vuex.Store({
     app: 'examples'
   },
   mutations: {
-    'navigation/FORWARD': (state, {to, from}) => {
-      console.log('navigation/FORWARD', to, from)
-    },
-    'navigation/BACK': (state, {to, from}) => {
-      console.log('navigation/BACK', to, from)
-    },
-    'navigation/REFRESH': (state, {to, from}) => {
-      console.log('navigation/REFRESH', to, from)
-    },
-    'navigation/RESET': () => {
-      console.log('navigation/RESET')
-    }
+    // 'navigation/FORWARD': (state, {to, from}) => {
+    //   console.log('navigation/FORWARD', to, from)
+    // },
+    // 'navigation/BACK': (state, {to, from}) => {
+    //   console.log('navigation/BACK', to, from)
+    // },
+    // 'navigation/REPLACE': (state, {to, from}) => {
+    //   console.log('navigation/REPLACE', to, from)
+    // },
+    // 'navigation/REFRESH': (state, {to, from}) => {
+    //   console.log('navigation/REFRESH', to, from)
+    // },
+    // 'navigation/RESET': () => {
+    //   console.log('navigation/RESET')
+    // }
   }
 })
 
