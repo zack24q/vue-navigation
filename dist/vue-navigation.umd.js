@@ -63,9 +63,16 @@ var Navigator = (function (bus, store, moduleName, keyName) {
 
           state.routes.splice(state.routes.length - count, count);
         },
-        'navigation/REFRESH': function navigationREFRESH(state, _ref3) {
+        'navigation/REPLACE': function navigationREPLACE(state, _ref3) {
           var to = _ref3.to,
-              from = _ref3.from;
+              from = _ref3.from,
+              name = _ref3.name;
+
+          state.routes.splice(Routes.length - 1, 1, name);
+        },
+        'navigation/REFRESH': function navigationREFRESH(state, _ref4) {
+          var to = _ref4.to,
+              from = _ref4.from;
         },
         'navigation/RESET': function navigationRESET(state) {
           state.routes.splice(0, state.routes.length);
@@ -77,29 +84,40 @@ var Navigator = (function (bus, store, moduleName, keyName) {
   var forward = function forward(name, toRoute, fromRoute) {
     var to = { route: toRoute };
     var from = { route: fromRoute };
-    var route = store ? store.state[moduleName].routes : Routes;
+    var routes = store ? store.state[moduleName].routes : Routes;
 
-    from.name = route[route.length - 1] || null;
+    from.name = routes[routes.length - 1] || null;
     to.name = name;
-    store ? store.commit('navigation/FORWARD', { to: to, from: from, name: name }) : route.push(name);
-    window.sessionStorage.VUE_NAVIGATION = JSON.stringify(route);
+    store ? store.commit('navigation/FORWARD', { to: to, from: from, name: name }) : routes.push(name);
+    window.sessionStorage.VUE_NAVIGATION = JSON.stringify(routes);
     bus.$emit('forward', to, from);
   };
   var back = function back(count, toRoute, fromRoute) {
     var to = { route: toRoute };
     var from = { route: fromRoute };
-    var route = store ? store.state[moduleName].routes : Routes;
-    from.name = route[route.length - 1];
-    to.name = route[route.length - 1 - count];
-    store ? store.commit('navigation/BACK', { to: to, from: from, count: count }) : route.splice(Routes.length - count, count);
-    window.sessionStorage.VUE_NAVIGATION = JSON.stringify(route);
+    var routes = store ? store.state[moduleName].routes : Routes;
+    from.name = routes[routes.length - 1];
+    to.name = routes[routes.length - 1 - count];
+    store ? store.commit('navigation/BACK', { to: to, from: from, count: count }) : routes.splice(Routes.length - count, count);
+    window.sessionStorage.VUE_NAVIGATION = JSON.stringify(routes);
     bus.$emit('back', to, from);
+  };
+  var replace = function replace(name, toRoute, fromRoute) {
+    var to = { route: toRoute };
+    var from = { route: fromRoute };
+    var routes = store ? store.state[moduleName].routes : Routes;
+
+    from.name = routes[routes.length - 1] || null;
+    to.name = name;
+    store ? store.commit('navigation/REPLACE', { to: to, from: from, name: name }) : routes.splice(Routes.length - 1, 1, name);
+    window.sessionStorage.VUE_NAVIGATION = JSON.stringify(routes);
+    bus.$emit('replace', to, from);
   };
   var refresh = function refresh(toRoute, fromRoute) {
     var to = { route: toRoute };
     var from = { route: fromRoute };
-    var route = store ? store.state[moduleName].routes : Routes;
-    to.name = from.name = route[route.length - 1];
+    var routes = store ? store.state[moduleName].routes : Routes;
+    to.name = from.name = routes[routes.length - 1];
     store ? store.commit('navigation/REFRESH', { to: to, from: from }) : null;
     bus.$emit('refresh', to, from);
   };
@@ -109,15 +127,19 @@ var Navigator = (function (bus, store, moduleName, keyName) {
     bus.$emit('reset');
   };
 
-  var record = function record(toRoute, fromRoute) {
+  var record = function record(toRoute, fromRoute, replaceFlag) {
     var name = getKey(toRoute, keyName);
-    var toIndex = Routes.lastIndexOf(name);
-    if (toIndex === -1) {
-      forward(name, toRoute, fromRoute);
-    } else if (toIndex === Routes.length - 1) {
-      refresh(toRoute, fromRoute);
+    if (replaceFlag) {
+      replace(name, toRoute, fromRoute);
     } else {
-      back(Routes.length - 1 - toIndex, toRoute, fromRoute);
+      var toIndex = Routes.lastIndexOf(name);
+      if (toIndex === -1) {
+        forward(name, toRoute, fromRoute);
+      } else if (toIndex === Routes.length - 1) {
+        refresh(toRoute, fromRoute);
+      } else {
+        back(Routes.length - 1 - toIndex, toRoute, fromRoute);
+      }
     }
   };
 
@@ -162,9 +184,16 @@ var NavComponent = (function (keyName) {
       if (vnode) {
         var key = getKey(this.$route, keyName);
 
-        vnode.key += key;
+        if (vnode.key.indexOf(key) === -1) {
+          vnode.key += key;
+        }
         if (this.cache[key]) {
-          vnode.componentInstance = this.cache[key].componentInstance;
+          if (vnode.key === this.cache[key].key) {
+            vnode.componentInstance = this.cache[key].componentInstance;
+          } else {
+            this.cache[key].componentInstance.$destroy();
+            this.cache[key] = vnode;
+          }
         } else {
           this.cache[key] = vnode;
         }
@@ -195,18 +224,26 @@ var index = {
     var bus = new Vue();
     var navigator = Navigator(bus, store, moduleName, keyName);
 
+    var routerReplace = router.replace.bind(router);
+    var replaceFlag = false;
+    router.replace = function (location, onComplete, onAbort) {
+      replaceFlag = true;
+      routerReplace(location, onComplete, onAbort);
+    };
+
     router.beforeEach(function (to, from, next) {
       if (!to.query[keyName]) {
         var query = _extends({}, to.query);
         query[keyName] = genKey();
-        next({ path: to.path, query: query, replace: !from.query[keyName] });
+        next({ path: to.path, query: query, replace: replaceFlag || !from.query[keyName] });
       } else {
         next();
       }
     });
 
     router.afterEach(function (to, from) {
-      navigator.record(to, from);
+      navigator.record(to, from, replaceFlag);
+      replaceFlag = false;
     });
 
     Vue.component('navigation', NavComponent(keyName));

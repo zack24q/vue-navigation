@@ -35,10 +35,20 @@ export default (keyName) => {
       if (vnode) {
         const key = getKey(this.$route, keyName)
         // prevent vue-router reuse component
-        vnode.key += key
+        if (vnode.key.indexOf(key) === -1) {
+          vnode.key += key
+        }
         if (this.cache[key]) {
-          vnode.componentInstance = this.cache[key].componentInstance
+          if (vnode.key === this.cache[key].key) {
+            // restore vnode from cache
+            vnode.componentInstance = this.cache[key].componentInstance
+          } else {
+            // replace vnode to cache
+            this.cache[key].componentInstance.$destroy()
+            this.cache[key] = vnode
+          }
         } else {
+          // cache new vnode
           this.cache[key] = vnode
         }
         vnode.data.keepAlive = true
