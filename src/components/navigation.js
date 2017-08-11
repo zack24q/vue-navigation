@@ -33,11 +33,13 @@ export default (keyName) => {
     render() {
       const vnode = this.$slots.default ? this.$slots.default[0] : null
       if (vnode) {
-        const key = getKey(this.$route, keyName)
+        vnode.key = vnode.key || (vnode.isComment
+          ? 'comment'
+          : vnode.tag)
         // prevent vue-router reuse component
-        vnode.key = vnode.key || ''
+        const key = getKey(this.$route, keyName)
         if (vnode.key.indexOf(key) === -1) {
-          vnode.key += key
+          vnode.key = `__navigation-${key}-${vnode.key}`
         }
         if (this.cache[key]) {
           if (vnode.key === this.cache[key].key) {
