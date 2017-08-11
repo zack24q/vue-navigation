@@ -14,20 +14,20 @@
 <script>
   export default {
     name: 'page',
-    data () {
+    data() {
       return {
         scrollTop: 0
       }
     },
     methods: {
-      back () {
+      back() {
         window.history.back()
       },
-      scroll () {
+      scroll() {
         this.scrollTop = this.$refs.content.scrollTop
       }
     },
-    activated () {
+    activated() {
       this.$refs.content.scrollTop = this.scrollTop
     }
   }

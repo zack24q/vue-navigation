@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 // import Navigation from '../../src'
-import Navigation from '../../dist/vue-navigation.umd'
+import Navigation from '../../dist/vue-navigation.esm'
 
 Vue.config.productionTip = false
 

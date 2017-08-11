@@ -13,14 +13,17 @@ const router = new Router({
   mode: 'hash',
   routes: [
     {
+      name: 'index',
       path: '/',
       component: Index
     },
     {
+      name: 'list',
       path: '/list',
       component: List
     },
     {
+      name: 'detail',
       path: '/list/:id',
       component: Detail
     },
