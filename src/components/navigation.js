@@ -35,6 +35,7 @@ export default (keyName) => {
       if (vnode) {
         const key = getKey(this.$route, keyName)
         // prevent vue-router reuse component
+        vnode.key = vnode.key || ''
         if (vnode.key.indexOf(key) === -1) {
           vnode.key += key
         }
