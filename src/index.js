@@ -1,6 +1,6 @@
 import Routes from './routes'
 import Navigator from './navigator'
-import NavComponent from './components/navigation'
+import NavComponent from './components/Navigation'
 import { genKey } from './utils'
 
 export default {
