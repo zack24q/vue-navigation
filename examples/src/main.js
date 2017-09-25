@@ -10,7 +10,7 @@ import Navigation from '../../dist/vue-navigation.esm'
 Vue.config.productionTip = false
 
 // you can use with vuex
-Vue.use(Navigation, {router, store})
+Vue.use(Navigation, { router, store })
 // Vue.use(Navigation, {router})
 
 /* eslint-disable no-new */
@@ -18,5 +18,5 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: {App}
+  components: { App }
 })
