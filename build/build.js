@@ -47,7 +47,7 @@ const targets = [
 rollup.rollup(inputOptions).then(bundle => {
   const size = code => filesize(Buffer.byteLength(code))
   console.info('\nfiles size:')
-  targets.forEach(({name, options, uglify}) => {
+  targets.forEach(({ name, options, uglify }) => {
     const code = bundle.generate(options).code
     console.info(`${name}.js      ${size(code)}`)
     fs.writeFileSync(`dist/${name}.js`, code, 'utf8')

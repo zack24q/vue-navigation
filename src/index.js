@@ -1,10 +1,10 @@
 import Routes from './routes'
 import Navigator from './navigator'
 import NavComponent from './components/navigation'
-import {genKey} from './utils'
+import { genKey } from './utils'
 
 export default {
-  install: (Vue, {router, store, moduleName = 'navigation', keyName = 'VNK'} = {}) => {
+  install: (Vue, { router, store, moduleName = 'navigation', keyName = 'VNK' } = {}) => {
     if (!router) {
       console.error('vue-navigation need options: router')
       return
@@ -24,9 +24,9 @@ export default {
     // init router`s keyName
     router.beforeEach((to, from, next) => {
       if (!to.query[keyName]) {
-        const query = {...to.query}
+        const query = { ...to.query }
         query[keyName] = genKey()
-        next({path: to.path, query, replace: replaceFlag || !from.query[keyName]})
+        next({ path: to.path, query, replace: replaceFlag || !from.query[keyName] })
       } else {
         next()
       }

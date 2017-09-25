@@ -1,5 +1,5 @@
 import Routes from '../routes'
-import {getKey, matches} from '../utils'
+import { getKey, matches } from '../utils'
 
 export default (keyName) => {
   return {

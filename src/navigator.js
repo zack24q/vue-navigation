@@ -1,5 +1,5 @@
 import Routes from './routes'
-import {getKey} from './utils'
+import { getKey } from './utils'
 
 export default (bus, store, moduleName, keyName) => {
   if (store) {
@@ -8,16 +8,16 @@ export default (bus, store, moduleName, keyName) => {
         routes: Routes
       },
       mutations: {
-        'navigation/FORWARD': (state, {to, from, name}) => {
+        'navigation/FORWARD': (state, { to, from, name }) => {
           state.routes.push(name)
         },
-        'navigation/BACK': (state, {to, from, count}) => {
+        'navigation/BACK': (state, { to, from, count }) => {
           state.routes.splice(state.routes.length - count, count)
         },
-        'navigation/REPLACE': (state, {to, from, name}) => {
+        'navigation/REPLACE': (state, { to, from, name }) => {
           state.routes.splice(Routes.length - 1, 1, name)
         },
-        'navigation/REFRESH': (state, {to, from}) => {
+        'navigation/REFRESH': (state, { to, from }) => {
         },
         'navigation/RESET': (state) => {
           state.routes.splice(0, state.routes.length)
@@ -27,43 +27,43 @@ export default (bus, store, moduleName, keyName) => {
   }
 
   const forward = (name, toRoute, fromRoute) => {
-    const to = {route: toRoute}
-    const from = {route: fromRoute}
+    const to = { route: toRoute }
+    const from = { route: fromRoute }
     const routes = store ? store.state[moduleName].routes : Routes
     // if from does not exist, it will be set null
     from.name = routes[routes.length - 1] || null
     to.name = name
-    store ? store.commit('navigation/FORWARD', {to, from, name}) : routes.push(name)
+    store ? store.commit('navigation/FORWARD', { to, from, name }) : routes.push(name)
     window.sessionStorage.VUE_NAVIGATION = JSON.stringify(routes)
     bus.$emit('forward', to, from)
   }
   const back = (count, toRoute, fromRoute) => {
-    const to = {route: toRoute}
-    const from = {route: fromRoute}
+    const to = { route: toRoute }
+    const from = { route: fromRoute }
     const routes = store ? store.state[moduleName].routes : Routes
     from.name = routes[routes.length - 1]
     to.name = routes[routes.length - 1 - count]
-    store ? store.commit('navigation/BACK', {to, from, count}) : routes.splice(Routes.length - count, count)
+    store ? store.commit('navigation/BACK', { to, from, count }) : routes.splice(Routes.length - count, count)
     window.sessionStorage.VUE_NAVIGATION = JSON.stringify(routes)
     bus.$emit('back', to, from)
   }
   const replace = (name, toRoute, fromRoute) => {
-    const to = {route: toRoute}
-    const from = {route: fromRoute}
+    const to = { route: toRoute }
+    const from = { route: fromRoute }
     const routes = store ? store.state[moduleName].routes : Routes
     // if from does not exist, it will be set null
     from.name = routes[routes.length - 1] || null
     to.name = name
-    store ? store.commit('navigation/REPLACE', {to, from, name}) : routes.splice(Routes.length - 1, 1, name)
+    store ? store.commit('navigation/REPLACE', { to, from, name }) : routes.splice(Routes.length - 1, 1, name)
     window.sessionStorage.VUE_NAVIGATION = JSON.stringify(routes)
     bus.$emit('replace', to, from)
   }
   const refresh = (toRoute, fromRoute) => {
-    const to = {route: toRoute}
-    const from = {route: fromRoute}
+    const to = { route: toRoute }
+    const from = { route: fromRoute }
     const routes = store ? store.state[moduleName].routes : Routes
     to.name = from.name = routes[routes.length - 1]
-    store ? store.commit('navigation/REFRESH', {to, from}) : null
+    store ? store.commit('navigation/REFRESH', { to, from }) : null
     bus.$emit('refresh', to, from)
   }
   const reset = () => {
