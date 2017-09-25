@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual'
 import Routes from './routes'
 import Navigator from './navigator'
 import NavComponent from './components/Navigation'
@@ -25,7 +26,15 @@ export default {
     router.beforeEach((to, from, next) => {
       if (!to.query[keyName]) {
         const query = { ...to.query }
-        query[keyName] = genKey()
+        // go to the same route will have same key
+        if (to.path === from.path && isEqual(
+          { ...to.query, [keyName]: null },
+          { ...from.query, [keyName]: null },
+        ) && from.query[keyName]) {
+          query[keyName] = from.query[keyName]
+        } else {
+          query[keyName] = genKey()
+        }
         next({ path: to.path, query, replace: replaceFlag || !from.query[keyName] })
       } else {
         next()

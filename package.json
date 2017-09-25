@@ -35,7 +35,9 @@
     "url": "https://github.com/zack24q/vue-navigation/issues"
   },
   "homepage": "https://github.com/zack24q/vue-navigation#readme",
-  "dependencies": {},
+  "dependencies": {
+    "lodash": "^4.17.4"
+  },
   "devDependencies": {
     "anywhere": "^1.4.0",
     "autoprefixer": "^6.7.2",
