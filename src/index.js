@@ -26,7 +26,7 @@ export default {
     router.beforeEach((to, from, next) => {
       if (!to.query[keyName]) {
         const query = { ...to.query }
-        // go to the same route will have same key
+        // go to the same route will be set the same key
         if (to.path === from.path && isEqual(
           { ...to.query, [keyName]: null },
           { ...from.query, [keyName]: null },
