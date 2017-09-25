@@ -1,6 +1,6 @@
 .DS_Store
 .idea/
-.vscode
+.vscode/
 node_modules/
 npm-debug.log
 yarn-error.log
