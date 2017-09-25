@@ -1,8 +1,10 @@
 /**
-* vue-navigation v1.1.1
+* vue-navigation v1.1.2
 * https://github.com/zack24q/vue-navigation
 * Released under the MIT License.
 */
+
+import isEqual from 'lodash/isEqual';
 
 var routes = [];
 
@@ -201,6 +203,8 @@ var NavComponent = (function (keyName) {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var index = {
   install: function install(Vue) {
     var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
@@ -229,7 +233,12 @@ var index = {
     router.beforeEach(function (to, from, next) {
       if (!to.query[keyName]) {
         var query = _extends({}, to.query);
-        query[keyName] = genKey();
+
+        if (to.path === from.path && isEqual(_extends({}, to.query, _defineProperty({}, keyName, null)), _extends({}, from.query, _defineProperty({}, keyName, null))) && from.query[keyName]) {
+          query[keyName] = from.query[keyName];
+        } else {
+          query[keyName] = genKey();
+        }
         next({ path: to.path, query: query, replace: replaceFlag || !from.query[keyName] });
       } else {
         next();
