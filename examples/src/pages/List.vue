@@ -21,10 +21,13 @@
       }
     },
     activated() {
-      // console.log('list activated')
+      console.log('list activated')
     },
     deactivated() {
-      // console.log('list deactivated')
+      console.log('list deactivated')
+    },
+    destroyed() {
+      console.log('list destroyed')
     }
   }
 </script>

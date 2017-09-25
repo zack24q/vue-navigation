@@ -24,10 +24,13 @@
       }
     },
     activated() {
-      // console.log('index activated')
+      console.log('index activated')
     },
     deactivated() {
-      // console.log('index deactivated')
+      console.log('index deactivated')
+    },
+    destroyed() {
+      console.log('index destroyed')
     }
   }
 </script>

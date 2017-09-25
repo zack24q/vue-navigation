@@ -24,10 +24,13 @@
       }
     },
     activated() {
-      // console.log('detail activated')
+      console.log('detail activated')
     },
     deactivated() {
-      // console.log('detail deactivated')
+      console.log('detail deactivated')
+    },
+    destroyed() {
+      console.log('detail destroyed')
     },
     methods: {
       replaceToNextDetail() {
