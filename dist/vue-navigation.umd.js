@@ -1,16 +1,14 @@
 /**
-* vue-navigation v1.1.2
+* vue-navigation v1.1.3
 * https://github.com/zack24q/vue-navigation
 * Released under the MIT License.
 */
 
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('lodash/isEqual')) :
-	typeof define === 'function' && define.amd ? define(['lodash/isEqual'], factory) :
-	(global.VueNavigation = factory(global.isEqual));
-}(this, (function (isEqual) { 'use strict';
-
-isEqual = 'default' in isEqual ? isEqual['default'] : isEqual;
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.VueNavigation = factory());
+}(this, (function () { 'use strict';
 
 var routes = [];
 
@@ -42,6 +40,46 @@ function matches(pattern, name) {
     return pattern.test(name);
   }
   return false;
+}
+
+function isObjEqual(obj1, obj2) {
+  if (obj1 === obj2) {
+    return true;
+  } else {
+    var keys1 = Object.getOwnPropertyNames(obj1);
+    var keys2 = Object.getOwnPropertyNames(obj2);
+    if (keys1.length !== keys2.length) {
+      return false;
+    }
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = keys1[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var key = _step.value;
+
+        if (obj1[key] !== obj2[key]) {
+          return false;
+        }
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+
+    return true;
+  }
 }
 
 var Navigator = (function (bus, store, moduleName, keyName) {
@@ -240,7 +278,7 @@ var index = {
       if (!to.query[keyName]) {
         var query = _extends({}, to.query);
 
-        if (to.path === from.path && isEqual(_extends({}, to.query, _defineProperty({}, keyName, null)), _extends({}, from.query, _defineProperty({}, keyName, null))) && from.query[keyName]) {
+        if (to.path === from.path && isObjEqual(_extends({}, to.query, _defineProperty({}, keyName, null)), _extends({}, from.query, _defineProperty({}, keyName, null))) && from.query[keyName]) {
           query[keyName] = from.query[keyName];
         } else {
           query[keyName] = genKey();
