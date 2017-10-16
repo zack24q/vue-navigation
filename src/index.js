@@ -1,8 +1,7 @@
-import isEqual from 'lodash/isEqual'
 import Routes from './routes'
 import Navigator from './navigator'
 import NavComponent from './components/Navigation'
-import { genKey } from './utils'
+import { genKey, isObjEqual } from './utils'
 
 export default {
   install: (Vue, { router, store, moduleName = 'navigation', keyName = 'VNK' } = {}) => {
@@ -27,7 +26,7 @@ export default {
       if (!to.query[keyName]) {
         const query = { ...to.query }
         // go to the same route will be set the same key
-        if (to.path === from.path && isEqual(
+        if (to.path === from.path && isObjEqual(
           { ...to.query, [keyName]: null },
           { ...from.query, [keyName]: null },
         ) && from.query[keyName]) {

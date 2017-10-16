@@ -22,3 +22,22 @@ export function matches(pattern, name) {
   }
   return false
 }
+
+export function isObjEqual(obj1, obj2) {
+  if (obj1 === obj2) {
+    return true
+  }
+  else {
+    const keys1 = Object.getOwnPropertyNames(obj1)
+    const keys2 = Object.getOwnPropertyNames(obj2)
+    if (keys1.length !== keys2.length) {
+      return false
+    }
+    for (const key of keys1) {
+      if (obj1[key] !== obj2[key]) {
+        return false
+      }
+    }
+    return true
+  }
+}
