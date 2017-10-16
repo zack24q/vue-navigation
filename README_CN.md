@@ -1,8 +1,7 @@
 # vue-navigation
 
 [![npm](https://img.shields.io/npm/dm/vue-navigation.svg)](https://www.npmjs.com/package/vue-navigation)
-[![npm](https://img.shields.io/npm/v/vue-navigation.svg)](https://www.npmjs.com/package/vue-navigation)
-<!-- [![npm (tag)](https://img.shields.io/npm/v/vue-navigation/next.svg)](https://www.npmjs.com/package/vue-navigation) -->
+[![npm](https://img.shields.io/npm/v/vue-navigation.svg)](https://www.npmjs.com/package/vue-navigation)<!-- [![npm (tag)](https://img.shields.io/npm/v/vue-navigation/next.svg)](https://www.npmjs.com/package/vue-navigation) -->
 [![npm](https://img.shields.io/npm/l/vue-navigation.svg)](https://www.npmjs.com/package/vue-navigation)
 [![Github file size](https://img.shields.io/github/size/zack24q/vue-navigation/dist/vue-navigation.esm.min.js.svg)](https://github.com/zack24q/vue-navigation/blob/master/dist/vue-navigation.esm.min.js)
 
