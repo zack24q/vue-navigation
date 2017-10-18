@@ -5,14 +5,17 @@ export default (bus, store, moduleName, keyName) => {
   if (store) {
     store.registerModule(moduleName, {
       state: {
-        routes: Routes
+        routes: Routes,
+        direction: 'FORWARD'
       },
       mutations: {
         'navigation/FORWARD': (state, { to, from, name }) => {
           state.routes.push(name)
+          state.direction = 'FORWARD'
         },
         'navigation/BACK': (state, { to, from, count }) => {
           state.routes.splice(state.routes.length - count, count)
+          state.direction = 'BACK'
         },
         'navigation/REPLACE': (state, { to, from, name }) => {
           state.routes.splice(Routes.length - 1, 1, name)
