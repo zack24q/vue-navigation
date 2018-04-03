@@ -4,7 +4,7 @@ import NavComponent from './components/Navigation'
 import { genKey, isObjEqual } from './utils'
 
 export default {
-  install: (Vue, { router, store, moduleName = 'navigation', keyName = 'VNK' } = {}) => {
+  install: (Vue, { router, store, moduleName = 'navigation', keyName = 'VNK', noCacheList = [] } = {}) => {
     if (!router) {
       console.error('vue-navigation need options: router')
       return
@@ -46,7 +46,7 @@ export default {
       replaceFlag = false
     })
 
-    Vue.component('navigation', NavComponent(keyName))
+    Vue.component('navigation', NavComponent(keyName, noCacheList))
 
     Vue.navigation = Vue.prototype.$navigation = {
       on: (event, callback) => {

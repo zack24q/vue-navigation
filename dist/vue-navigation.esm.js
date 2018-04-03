@@ -183,6 +183,8 @@ var Navigator = (function (bus, store, moduleName, keyName) {
 });
 
 var NavComponent = (function (keyName) {
+  var noCacheList = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+
   return {
     name: 'navigation',
     abstract: true,
@@ -230,7 +232,9 @@ var NavComponent = (function (keyName) {
             this.cache[key] = vnode;
           }
         } else {
-          this.cache[key] = vnode;
+          if (noCacheList.indexOf(this.$router.history.current.name) === -1) {
+            this.cache[key] = vnode;
+          }
         }
         vnode.data.keepAlive = true;
       }
@@ -251,7 +255,9 @@ var index = {
         _ref$moduleName = _ref.moduleName,
         moduleName = _ref$moduleName === undefined ? 'navigation' : _ref$moduleName,
         _ref$keyName = _ref.keyName,
-        keyName = _ref$keyName === undefined ? 'VNK' : _ref$keyName;
+        keyName = _ref$keyName === undefined ? 'VNK' : _ref$keyName,
+        _ref$noCacheList = _ref.noCacheList,
+        noCacheList = _ref$noCacheList === undefined ? [] : _ref$noCacheList;
 
     if (!router) {
       console.error('vue-navigation need options: router');
@@ -288,7 +294,7 @@ var index = {
       replaceFlag = false;
     });
 
-    Vue.component('navigation', NavComponent(keyName));
+    Vue.component('navigation', NavComponent(keyName, noCacheList));
 
     Vue.navigation = Vue.prototype.$navigation = {
       on: function on(event, callback) {

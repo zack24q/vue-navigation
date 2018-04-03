@@ -1,7 +1,7 @@
 import Routes from '../routes'
 import { getKey, matches } from '../utils'
 
-export default (keyName) => {
+export default (keyName, noCacheList = []) => {
   return {
     name: 'navigation',
     abstract: true,
@@ -52,7 +52,9 @@ export default (keyName) => {
           }
         } else {
           // cache new vnode
-          this.cache[key] = vnode
+          if (noCacheList.indexOf(this.$router.history.current.name) === -1) {
+            this.cache[key] = vnode
+          }
         }
         vnode.data.keepAlive = true
       }
