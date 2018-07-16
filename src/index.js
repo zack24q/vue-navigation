@@ -34,7 +34,7 @@ export default {
         } else {
           query[keyName] = genKey()
         }
-        next({ path: to.path, query, replace: replaceFlag || !from.query[keyName] })
+        next({ name: to.name, params: to.params, query, replace: replaceFlag || !from.query[keyName] })
       } else {
         next()
       }
