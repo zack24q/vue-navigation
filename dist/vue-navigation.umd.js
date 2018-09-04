@@ -1,5 +1,5 @@
 /**
-* vue-navigation v1.1.3
+* vue-navigation v1.1.4
 * https://github.com/zack24q/vue-navigation
 * Released under the MIT License.
 */
@@ -283,7 +283,7 @@ var index = {
         } else {
           query[keyName] = genKey();
         }
-        next({ path: to.path, query: query, replace: replaceFlag || !from.query[keyName] });
+        next({ name: to.name, params: to.params, query: query, replace: replaceFlag || !from.query[keyName] });
       } else {
         next();
       }
