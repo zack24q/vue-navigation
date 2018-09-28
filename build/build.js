@@ -14,7 +14,7 @@ const banner = `/**
 */
 `
 const inputOptions = {
-  entry: 'src/index.js',
+  input: 'src/index.js',
   plugins: [babel(), progress()]
 }
 const uglifyOptions = () => {
@@ -36,19 +36,20 @@ const targets = [
   {
     name: 'vue-navigation.umd',
     options: {
+      name:'VueNavigation',
       banner: banner,
       format: 'umd',
-      moduleName: 'VueNavigation'
     },
     uglify: uglifyJS
   }
 ]
 
-rollup.rollup(inputOptions).then(bundle => {
+async function build(){
+  const bundle = await rollup.rollup(inputOptions);
   const size = code => filesize(Buffer.byteLength(code))
   console.info('\nfiles size:')
-  targets.forEach(({ name, options, uglify }) => {
-    const code = bundle.generate(options).code
+  const arr = targets.map(async ({ name, options, uglify }) => {
+    const {code} = await bundle.generate(options)
     console.info(`${name}.js      ${size(code)}`)
     fs.writeFileSync(`dist/${name}.js`, code, 'utf8')
     const result = uglify.minify(code, uglifyOptions())
@@ -56,6 +57,9 @@ rollup.rollup(inputOptions).then(bundle => {
     console.info(`${name}.min.js  ${size(result.code)}`)
     fs.writeFileSync(`dist/${name}.min.js`, result.code, 'utf8')
   })
-
+  await Promise.all(arr);
   console.info('\nbuild done.')
-})
+}
+
+build();
+

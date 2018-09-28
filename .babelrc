@@ -1,19 +1,30 @@
 {
   "presets": [
     [
-      "env",
+      "@babel/preset-env",
       {
         "modules": false
       }
-    ],
-    "stage-2"
+    ]
+  ],
+  "plugins": [
+    // Stage 3
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-syntax-import-meta",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-json-strings",
+    // Stage 2
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    "@babel/plugin-proposal-function-sent",
+    "@babel/plugin-proposal-export-namespace-from",
+    "@babel/plugin-proposal-numeric-separator",
+    "@babel/plugin-proposal-throw-expressions"
   ],
   "comments": false,
   "env": {
     "test": {
       "presets": [
-        "env",
-        "stage-2"
+        "@babel/preset-env",
       ],
       "plugins": [
         "istanbul"

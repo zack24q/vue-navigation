@@ -41,3 +41,13 @@ export function isObjEqual(obj1, obj2) {
     return true
   }
 }
+
+export function typeGenerate(moduleName) {
+  return {
+    FORWARD: moduleName + "/FOROWRD",
+    BACK: moduleName + "/BACK",
+    REPLACE: moduleName + "/REPLACE",
+    RESET: moduleName + "/RESET",
+    REFRESH: moduleName + "/REFRESH"
+  };
+}
